@@ -12,9 +12,9 @@ jobs:
     
     services:
       postgres:
-        image: postgres:15
+        image: postgres:15-alpine
         env:
-          POSTGRES_DB: laravel
+          POSTGRES_DB: laravel_test_db
           POSTGRES_USER: developer
           POSTGRES_PASSWORD: secret
         ports:
@@ -38,6 +38,12 @@ jobs:
       run: |
         cd api
         cp .env.example .env
+        sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=pgsql/' .env
+        sed -i 's/DB_HOST=127.0.0.1/DB_HOST=localhost/' .env
+        sed -i 's/DB_PORT=3306/DB_PORT=5432/' .env
+        sed -i 's/DB_DATABASE=laravel/DB_DATABASE=laravel_test_db/' .env
+        sed -i 's/DB_USERNAME=root/DB_USERNAME=developer/' .env
+        sed -i 's/DB_PASSWORD=/DB_PASSWORD=secret/' .env
         
     - name: Install Dependencies
       run: |
@@ -49,10 +55,34 @@ jobs:
         cd api
         php artisan key:generate
     
+    - name: Directory Permissions
+      run: |
+        cd api
+        chmod -R 777 storage bootstrap/cache
+    
+    - name: Run Migrations
+      run: |
+        cd api
+        php artisan migrate --force
+      env:
+        DB_CONNECTION: pgsql
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_DATABASE: laravel_test_db
+        DB_USERNAME: developer
+        DB_PASSWORD: secret
+    
     - name: Run Tests
       run: |
         cd api
         php artisan test
+      env:
+        DB_CONNECTION: pgsql
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_DATABASE: laravel_test_db
+        DB_USERNAME: developer
+        DB_PASSWORD: secret
 
   deploy-dev:
     needs: test
