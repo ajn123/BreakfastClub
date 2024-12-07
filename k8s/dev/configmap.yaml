@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: laravel-config
+  namespace: laravel-dev
+data:
+  APP_NAME: "Laravel"
+  APP_ENV: "development"
+  APP_DEBUG: "true"
+  APP_URL: "http://localhost"
+  DB_CONNECTION: "pgsql"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_DATABASE: "laravel" 
