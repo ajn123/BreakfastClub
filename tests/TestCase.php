@@ -2,9 +2,9 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -25,9 +25,9 @@ abstract class TestCase extends BaseTestCase
     /**
      * Helper method to make authenticated requests with CSRF
      */
-    protected function makeAuthenticatedRequest($method, $uri, $data = [], User $user = null)
+    protected function makeAuthenticatedRequest($method, $uri, $data = [], ?User $user = null)
     {
-        if (!$user) {
+        if (! $user) {
             $user = User::factory()->create();
         }
 
@@ -40,16 +40,16 @@ abstract class TestCase extends BaseTestCase
     /**
      * Helper method for password confirmation tests
      */
-    protected function confirmPassword($password = 'password', User $user = null)
+    protected function confirmPassword($password = 'password', ?User $user = null)
     {
-        if (!$user) {
+        if (! $user) {
             $user = User::factory()->create([
-                'password' => bcrypt($password)
+                'password' => bcrypt($password),
             ]);
         }
 
         return $this->makeAuthenticatedRequest('POST', '/confirm-password', [
-            'password' => $password
+            'password' => $password,
         ], $user);
     }
 }
