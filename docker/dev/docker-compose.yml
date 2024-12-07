@@ -18,6 +18,9 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - TEST_DB_DATABASE=${TEST_DB_DATABASE}
+      - TEST_DB_USERNAME=${DB_USERNAME}
+      - TEST_DB_PASSWORD=${DB_PASSWORD}
       - VITE_POLLING=true
     ports:
       - "5173:5173" # Vite dev server port
@@ -48,6 +51,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init-test-db.sh:/docker-entrypoint-initdb.d/init-test-db.sh
     ports:
       - "5432:5432"
     networks:

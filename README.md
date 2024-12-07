@@ -10,9 +10,17 @@
 - Run `docker compose exec api php artisan db:seed` to seed the database.
 
 
+## Aliases 
+To better execute commands in development you can add these aliases to your shell.
+
+```bash
+alias dapi='cd /path/to/docker-laravel-api && docker compose exec api'
+```
+
 
 # Notes
 
-- [ ] Get tests working.
+- [x] Get tests working.
 - [x] Get docker compose to work with vite.
 - [ ] Get k8s to work.
+- [ ] Get docker compose to work with mailhog.
