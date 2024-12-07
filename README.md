@@ -28,5 +28,15 @@ alias dapi='cd /path/to/docker-laravel-api && docker compose exec api'
 - [x] Get tests working.
 - [x] Get docker compose to work with vite.
 - [ ] Get k8s to work.
-- [ ] Get docker compose to work with mailhog.
+- [x] Get docker compose to work with mailhog.
+
+
+
+## Application Ports
+
+| Service    | Port  | Description                               |
+|------------|-------|-------------------------------------------|
+| Laravel    | 8000  | Main API Application                      |
+| Vite       | 5173  | Frontend Development Server               |
+| Mailhog    | 8025  | Email Testing Web Interface               |
 
