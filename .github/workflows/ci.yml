@@ -41,6 +41,12 @@ jobs:
         cache: 'npm'
         cache-dependency-path: api/package-lock.json
     
+    - name: Check code style
+      run: |
+        cd api
+        composer require laravel/pint --dev
+        ./vendor/bin/pint --test
+    
     - name: Copy .env
       run: |
         cd api

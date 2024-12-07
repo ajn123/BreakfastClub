@@ -7,6 +7,7 @@
 # Getting Started 
 
 - Make sure you have Docker and Docker Compose installed.
+- Go to the docker directory `cd docker/dev`.
 - Run `docker compose up` to start the development environment.
 - Make sure have an app key generated with `docker compose exec api php artisan key:generate`.
 - Run `docker compose exec api composer install` to install the dependencies.
@@ -28,3 +29,4 @@ alias dapi='cd /path/to/docker-laravel-api && docker compose exec api'
 - [x] Get docker compose to work with vite.
 - [ ] Get k8s to work.
 - [ ] Get docker compose to work with mailhog.
+
