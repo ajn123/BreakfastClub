@@ -9,7 +9,9 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    libpq-dev
+    libpq-dev \
+    nodejs \
+    npm
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -28,16 +30,23 @@ RUN mkdir -p /home/dev/.composer && \
 
 WORKDIR /var/www
 
+RUN mkdir -p /var/www/storage /var/www/bootstrap/cache
+RUN chown -R dev:www-data /var/www && \
+    chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+USER dev
+
 # Copy existing application directory contents
 COPY . .
 
 # Copy existing application directory permissions
 COPY --chown=dev:dev . .
 
-# Change current user to dev
-USER dev
 
 # Install dependencies
-RUN composer install
+RUN composer install && \
+    npm install && \
+    npm run build
 
-CMD ["php-fpm"]
+# Start both PHP-FPM and Vite
+CMD ["sh", "-c", "php-fpm & npm run dev"]

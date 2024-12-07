@@ -9,6 +9,7 @@ services:
     volumes:
       - ../../api:/var/www
       - api-vendor:/var/www/vendor
+      - /var/www/node_modules
     environment:
       - APP_ENV=local
       - DB_CONNECTION=pgsql
@@ -17,6 +18,9 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - VITE_POLLING=true
+    ports:
+      - "5173:5173" # Vite dev server port
     depends_on:
       - postgres
     networks:

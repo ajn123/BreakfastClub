@@ -8,3 +8,11 @@
 - Run `docker compose exec api composer install` to install the dependencies.
 - Run `docker compose exec api php artisan migrate` to create the tables.
 - Run `docker compose exec api php artisan db:seed` to seed the database.
+
+
+
+# Notes
+
+- [ ] Get tests working.
+- [x] Get docker compose to work with vite.
+- [ ] Get k8s to work.
