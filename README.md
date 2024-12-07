@@ -1,4 +1,8 @@
 
+[![Laravel CI](https://github.com/ajn123/BreakfastClub/actions/workflows/ci.yml/badge.svg)](https://github.com/ajn123/BreakfastClub/actions/workflows/ci.yml)
+
+
+
 
 # Getting Started 
 
