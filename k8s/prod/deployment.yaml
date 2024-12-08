@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: breakfast-club
+  namespace: prod
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: breakfast-club
+  template:
+    metadata:
+      labels:
+        app: breakfast-club
+    spec:
+      imagePullSecrets:
+        - name: do-registry
+      containers:
+      - name: breakfast-club
+        image: registry.digitalocean.com/breakfast-club/app:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: APP_ENV
+          value: "production"
+        - name: APP_KEY
+          valueFrom:
+            secretKeyRef:
+              name: breakfast-club-secrets
+              key: app-key
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: breakfast-club-config
+              key: db-host
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m" 

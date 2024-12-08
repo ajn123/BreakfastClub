@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: breakfast-club
+  namespace: prod
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: breakfast-club 

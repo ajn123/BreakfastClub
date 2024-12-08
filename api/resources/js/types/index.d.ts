@@ -13,10 +13,14 @@ declare global {
 
 import { Config } from 'ziggy-js';
 
+export type LocationPreference = 'NW' | 'NE' | 'SW' | 'SE' | 'NOVA' | 'MD';
+
 export interface Questionnaire {
     id: number;
     user_id: number;
-    // Add other questionnaire fields here
+    location_preference: LocationPreference;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface User {

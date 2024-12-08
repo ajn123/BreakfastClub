@@ -1,0 +1,13 @@
+apiVersion: v2
+name: breakfast-club
+description: A Helm chart for the Breakfast Club application
+version: 0.1.0
+type: application
+
+dependencies:
+  - name: postgresql
+    version: 12.x.x
+    repository: https://charts.bitnami.com/bitnami
+  - name: redis
+    version: 17.x.x
+    repository: https://charts.bitnami.com/bitnami 

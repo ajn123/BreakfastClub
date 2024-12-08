@@ -1,0 +1,239 @@
+# Default values for breakfast-club.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+replicaCount: 2
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: registry.digitalocean.com/starterk8s/app
+  tag: "latest"
+  pullPolicy: Always
+
+# This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets:
+  - name: do-registry
+
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: LoadBalancer
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 80
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: your-domain.com
+      paths:
+        - path: /
+          pathType: Prefix
+          serviceName: breakfast-club-v2
+          servicePort: 80
+  tls:
+    - secretName: breakfast-club-tls
+      hosts:
+        - your-domain.com
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 120
+  timeoutSeconds: 5
+  periodSeconds: 10
+  failureThreshold: 6
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 60
+  timeoutSeconds: 5
+  periodSeconds: 10
+  failureThreshold: 6
+
+# This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+# Application Configuration
+app:
+  name: breakfast-club
+  replicaCount: 2
+  
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+  config:
+    appEnv: production
+    appDebug: false
+
+# Ingress Configuration
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: your-domain.com
+      paths:
+        - path: /
+          pathType: Prefix
+          serviceName: breakfast-club-v2
+          servicePort: 80
+  tls:
+    - secretName: breakfast-club-tls
+      hosts:
+        - your-domain.com
+
+# Redis Configuration
+redis:
+  architecture: standalone
+  auth:
+    enabled: true
+    password: ""  # Will be auto-generated if not set
+  master:
+    persistence:
+      enabled: true
+      size: 8Gi
+
+# PostgreSQL Configuration
+postgresql:
+  auth:
+    username: breakfast
+    password: ""  # Will be auto-generated if not set
+    database: breakfast
+  primary:
+    persistence:
+      enabled: true
+      size: 10Gi
+
+# Service Configuration
+service:
+  type: ClusterIP
+  port: 80
+
+# If you're using nginx as a separate container/deployment
+nginx:
+  image:
+    repository: nginx
+    tag: "alpine"  # or "1.24-alpine" for a specific version
+    pullPolicy: IfNotPresent
+
+# Add environment variables
+env:
+  - name: APP_NAME
+    value: "Breakfast Club"
+  - name: APP_ENV
+    value: "production"
+  - name: APP_DEBUG
+    value: "false"
+  - name: APP_URL
+    value: "http://your-domain.com"
+  - name: DB_CONNECTION
+    value: "pgsql"
+  - name: DB_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: breakfast-club-config
+        key: db-host
+  - name: DB_PORT
+    value: "5432"
+  - name: DB_DATABASE
+    valueFrom:
+      configMapKeyRef:
+        name: breakfast-club-config
+        key: db-database
+  - name: DB_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: breakfast-club-secrets
+        key: db-username
+  - name: DB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: breakfast-club-secrets
+        key: db-password

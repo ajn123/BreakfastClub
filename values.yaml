@@ -1,0 +1,37 @@
+# Application configuration
+app:
+  replicaCount: 1
+  image:
+    repository: your-dockerhub-username/breakfast-club
+    tag: latest
+  environment:
+    APP_KEY: "base64:your-laravel-app-key"
+    APP_ENV: production
+    APP_DEBUG: "false"
+    DB_CONNECTION: pgsql
+    DB_HOST: breakfast-club-postgresql
+    DB_PORT: "5432"
+    DB_DATABASE: breakfast_club
+    DB_USERNAME: postgres
+    REDIS_HOST: breakfast-club-redis
+    REDIS_PORT: "6379"
+  imagePullSecrets:
+    - name: regcred
+
+# PostgreSQL configuration
+postgresql:
+  auth:
+    username: postgres
+    password: your-secure-password
+    database: breakfast_club
+  primary:
+    persistence:
+      size: 1Gi
+
+# Redis configuration
+redis:
+  auth:
+    password: your-secure-password
+  master:
+    persistence:
+      size: 1Gi 
