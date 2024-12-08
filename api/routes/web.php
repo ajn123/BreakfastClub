@@ -29,4 +29,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/questionnaire/data', [QuestionnaireController::class, 'show'])->name('questionnaire.show');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
