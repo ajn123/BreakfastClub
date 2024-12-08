@@ -29,7 +29,7 @@ alias dapi='cd /path/to/docker-laravel-api && docker compose exec api'
 - [x] Get docker compose to work with vite.
 - [ ] Get k8s to work.
 - [x] Get docker compose to work with mailhog.
-
+- [ ] Build out questionnaire.
 
 
 ## Application Ports
