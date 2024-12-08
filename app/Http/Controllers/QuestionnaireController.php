@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Questionnaire;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Models\Questionnaire;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionnaireController extends Controller
@@ -18,7 +18,7 @@ class QuestionnaireController extends Controller
         $existingQuestionnaire = Auth::user()->questionnaire;
 
         return Inertia::render('Questionnaire/Index', [
-            'existingData' => $existingQuestionnaire
+            'existingData' => $existingQuestionnaire,
         ]);
     }
 
@@ -75,9 +75,9 @@ class QuestionnaireController extends Controller
 
         $questionnaire = Auth::user()->questionnaire;
 
-        if (!$questionnaire) {
+        if (! $questionnaire) {
             return response()->json([
-                'message' => 'Questionnaire not found'
+                'message' => 'Questionnaire not found',
             ], 404);
         }
 
@@ -93,9 +93,9 @@ class QuestionnaireController extends Controller
     {
         $questionnaire = Auth::user()->questionnaire;
 
-        if (!$questionnaire) {
+        if (! $questionnaire) {
             return response()->json([
-                'message' => 'Questionnaire not found'
+                'message' => 'Questionnaire not found',
             ], 404);
         }
 
