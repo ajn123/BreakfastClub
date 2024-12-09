@@ -36,6 +36,6 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "framer-motion": "^11.13.1"
+        "framer-motion": "^11.13.3"
     }
 }
