@@ -1,3 +1,4 @@
+# Use the official PHP image with FPM
 FROM php:8.2-fpm
 
 # Install system dependencies
@@ -11,10 +12,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     libpq-dev \
     nodejs \
-    npm
-
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+    npm && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath
@@ -30,44 +29,27 @@ RUN mkdir -p /home/dev/.composer && \
 
 WORKDIR /var/www
 
-RUN mkdir -p /var/www/storage /var/www/bootstrap/cache
+# Copy application source code
+COPY ./api .
+
+# Debug step to list files in /var/www
+RUN ls -la /var/www
+
+# Set permissions
 RUN chown -R dev:www-data /var/www && \
+    mkdir -p /var/www/storage /var/www/bootstrap/cache && \
     chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Copy existing application directory contents
-COPY api/ .
-
-# Copy existing application directory permissions
-COPY --chown=dev:dev . .
-
-# Set correct permissions for storage, cache, and SSR directories
-RUN chown -R dev:www-data /var/www/storage /var/www/bootstrap/cache && \
-    chmod -R 775 /var/www/storage /var/www/bootstrap/cache && \
-    mkdir -p /var/www/vendor && \
-    chown -R dev:www-data /var/www/vendor && \
-    mkdir -p /var/www/bootstrap/ssr && \
-    chown -R dev:www-data /var/www/bootstrap/ssr && \
-    chmod -R 775 /var/www/bootstrap/ssr
-
-# Create node_modules directory with correct permissions
-RUN mkdir -p /var/www/node_modules && \
-    chown -R dev:www-data /var/www/node_modules && \
-    chmod -R 775 /var/www/node_modules && \
-    touch /var/www/package-lock.json && \
-    chown dev:www-data /var/www/package-lock.json && \
-    chmod 664 /var/www/package-lock.json
-
-# Create build directory with correct permissions
-RUN mkdir -p /var/www/public/build && \
-    chown -R dev:www-data /var/www/public/build && \
-    chmod -R 775 /var/www/public/build
-
+# Switch to the non-root user
 USER dev
 
-# Install dependencies
-RUN composer install && \
+# Install PHP and Node.js dependencies
+RUN composer install --no-dev --optimize-autoloader && \
     npm install && \
     npm run build
 
-# Start both PHP-FPM and Vite
-CMD ["sh", "-c", "php-fpm & npm run dev"]
+# Expose the port the app runs on
+EXPOSE 8000
+
+# Start PHP-FPM
+CMD ["php-fpm"]
