@@ -197,6 +197,7 @@ export default function Questionnaire({ auth }: PageProps) {
                     </div>
                 );
 
+
             case 'scale':
                 return (
                     <div className="space-y-6">
