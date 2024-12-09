@@ -7,7 +7,7 @@ services:
     volumes:
       - ../../api:/var/www
       - api-vendor:/var/www/vendor
-      - /var/www/node_modules
+      - api-node-modules:/var/www/node_modules
     environment:
       - APP_ENV=local
       - DB_CONNECTION=pgsql
@@ -71,3 +71,4 @@ networks:
 volumes:
   postgres_data:
   api-vendor:
+  api-node-modules:
