@@ -21,6 +21,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history to ensure we have all files
+
+      - name: Debug directory structure
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Listing root directory:"
+          ls -la
+          echo "Listing all directories recursively:"
+          find . -type d
+          echo "Looking for Dockerfile:"
+          find . -name "Dockerfile" -type f
+          echo "GitHub Workspace: ${{ github.workspace }}"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -43,12 +56,6 @@ jobs:
             type=semver,pattern={{version}}
             type=sha,format=long
 
-      - name: Debug directory structure
-        run: |
-          pwd
-          ls -la
-          find . -name "Dockerfile"
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -57,3 +64,10 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }} 
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ github.workspace }}
+          file: ${{ github.workspace }}/Docker/dev/api/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
