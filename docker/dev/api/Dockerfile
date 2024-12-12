@@ -30,33 +30,19 @@ RUN mkdir -p /home/dev/.composer && \
 
 WORKDIR /var/www
 
-# Set permissions
+# Set permissions for directories
 RUN chown -R dev:www-data /var/www && \
     mkdir -p /var/www/storage /var/www/bootstrap/cache && \
     chmod -R 775 /var/www/storage /var/www/bootstrap/cache
 
-# Install PHP and Node.js dependencies
-RUN composer install --no-dev --optimize-autoloader && \
-    npm install && \
-    npm run build && \
-    chown -R dev:www-data /var/www/node_modules  # Add this line
-
-# ... rest of existing code ...
-
-
 USER dev
 
-# Copy existing application directory contents
-COPY . .
-
-# Copy existing application directory permissions
+# Copy application files first
 COPY --chown=dev:dev . .
 
-
-# Install dependencies
-RUN composer install && \
+# Now install dependencies after files are copied
+RUN composer install --no-dev --optimize-autoloader && \
     npm install && \
     npm run build
 
-# Start both PHP-FPM and Vite
 CMD ["sh", "-c", "php-fpm & npm run dev"]
