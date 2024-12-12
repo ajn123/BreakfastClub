@@ -56,6 +56,12 @@ jobs:
             type=semver,pattern={{version}}
             type=sha,format=long
 
+      - name: Debug directory structure
+        run: |
+          pwd
+          ls -la
+          find . -name "Dockerfile"
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -64,10 +70,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }} 
-        uses: docker/build-push-action@v5
-        with:
-          context: ${{ github.workspace }}
-          file: ${{ github.workspace }}/Docker/dev/api/Dockerfile
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
