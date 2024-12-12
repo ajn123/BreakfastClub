@@ -30,17 +30,6 @@ RUN mkdir -p /home/dev/.composer && \
 
 WORKDIR /var/www
 
-# Copy composer files first
-COPY --chown=dev:dev composer.* ./
-COPY --chown=dev:dev package*.json ./
-
-# Install dependencies
-RUN composer install --no-dev --no-scripts --no-autoloader && \
-    npm install
-
-# Copy the rest of the application
-COPY --chown=dev:dev . .
-
 # Set permissions for directories
 RUN chown -R dev:www-data /var/www && \
     mkdir -p /var/www/storage /var/www/bootstrap/cache && \
@@ -48,8 +37,12 @@ RUN chown -R dev:www-data /var/www && \
 
 USER dev
 
-# Generate autoload files and build assets
-RUN composer dump-autoload --optimize && \
+# Copy application files first
+COPY --chown=dev:dev ./api .
+
+# Now install dependencies after files are copied
+RUN composer install --no-dev --optimize-autoloader && \
+    npm install && \
     npm run build
 
 CMD ["sh", "-c", "php-fpm & npm run dev"]
