@@ -30,15 +30,11 @@ RUN mkdir -p /home/dev/.composer && \
 
 WORKDIR /var/www
 
-# Set permissions for directories
-RUN chown -R dev:www-data /var/www && \
-    mkdir -p /var/www/storage /var/www/bootstrap/cache && \
-    chmod -R 775 /var/www/storage /var/www/bootstrap/cache
-
-USER dev
-
 # Copy application files first
 COPY --chown=dev:dev ./api .
+
+# Create a volume for the application files
+VOLUME /var/www
 
 # Now install dependencies after files are copied
 RUN composer install --no-dev --optimize-autoloader && \
