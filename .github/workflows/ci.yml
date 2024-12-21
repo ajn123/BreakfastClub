@@ -120,6 +120,7 @@ jobs:
         run: |
           curl -sS https://getcomposer.org/installer | php -- --version=2.7.6
           sudo mv composer.phar /usr/local/bin/composer
+          cd api
           composer install --no-interaction --prefer-dist
       - name: Copy .env
         run: |
