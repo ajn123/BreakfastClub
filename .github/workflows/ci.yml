@@ -148,8 +148,8 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ghcr.io/${{ github.repository }}/your-image-name:latest -f Docker/Dockerfile ./api
+        docker build -t ghcr.io/breakfastclub/laravel-api:latest -f Docker/Dockerfile ./api
 
     - name: Push Docker image
       run: |
-        docker push ghcr.io/${{ github.repository }}/your-image-name:latest
+        docker push ghcr.io/breakfastclub/your-image-name:latest
