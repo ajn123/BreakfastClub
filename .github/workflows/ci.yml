@@ -1,5 +1,9 @@
 name: Laravel CI
 
+permissions:
+  packages: write  # Allow writing to packages
+  contents: read   # Allow reading repository contents
+
 on:
   push:
     branches: [ main, develop ]
