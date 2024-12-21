@@ -106,7 +106,7 @@ export default function Welcome() {
                     transition={{ delay: 1.1 }}
                     className="absolute bottom-8 text-center text-gray-500"
                 >
-                    <p>Available in Washington, DC and surrounding areaseee</p>
+                    <p>Available in Washington, DC and surrounding areas</p>
                 </motion.div>
             </div>
         </div>

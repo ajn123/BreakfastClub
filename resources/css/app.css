@@ -6,3 +6,12 @@
 body {
     background-color: #b09595;
 }
+
+
+.orange-body {
+    @apply bg-gradient-to-br from-amber-50 via-orange-50 to-red-50;
+}
+
+.orange-body-dark {
+    @apply bg-gradient-to-br from-amber-50 via-orange-50 to-red-50;
+}
