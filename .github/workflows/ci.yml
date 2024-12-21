@@ -132,3 +132,15 @@ jobs:
         run: |
           cd api
           ./vendor/bin/sail build --no-cache
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Docker image to GitHub Container Registry
+        run: |
+          cd api
+          docker tag sail-8.4/app ghcr.io/${{ github.repository }}/breakfast-club:latest
+          docker push ghcr.io/${{ github.repository }}/breakfast-club:latest
