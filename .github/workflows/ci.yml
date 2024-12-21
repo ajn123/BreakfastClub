@@ -125,7 +125,7 @@ jobs:
     - name: Build Docker image
       run: |
         cd api
-        docker compose build
+        sail build --no-cache -t ghcr.io/breakfastclub/breakfastclub:latest
 
     - name: Push Docker image
       run: |
