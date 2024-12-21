@@ -142,5 +142,5 @@ jobs:
       - name: Push Docker image to GitHub Container Registry
         run: |
           cd api
-          docker tag sail-8.4/app push ghcr.io/ajn123/breakfastclub/breakfast-club:latest
+          docker tag sail-8.4/app ghcr.io/ajn123/breakfastclub/breakfast-club:latest
           docker push ghcr.io/ajn123/breakfastclub/breakfast-club:latest
