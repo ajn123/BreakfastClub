@@ -122,15 +122,13 @@ jobs:
           sudo mv composer.phar /usr/local/bin/composer
           cd api
           composer install --no-interaction --prefer-dist
-      - name: Copy .env
+      - name: Install sail
         run: |
           cd api
           cp .env.example .env
+          composer require laravel/sail --dev
           php artisan sail:install --with=pgsql,redis,mailpit
-      - name: Start Sail
-        run: |
-          ./vendor/bin/sail up -d
-      - name: Set Up Database
+      - name: Build sail image
         run: |
           cd api
           ./vendor/bin/sail build --no-cache
