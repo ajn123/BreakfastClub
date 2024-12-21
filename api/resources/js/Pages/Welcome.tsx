@@ -42,7 +42,7 @@ export default function Welcome() {
                         transition={{ delay: 0.3 }}
                         className="text-2xl md:text-3xl text-gray-700 mb-8 font-light"
                     >
-                        Start Your Day with Great Company
+                        Start Your Day with Great
                     </motion.p>
 
                     {/* Description */}
@@ -106,7 +106,7 @@ export default function Welcome() {
                     transition={{ delay: 1.1 }}
                     className="absolute bottom-8 text-center text-gray-500"
                 >
-                    <p>Available in Washington, DC and surrounding areas</p>
+                    <p>Available in Washington, DC and surrounding areaseee</p>
                 </motion.div>
             </div>
         </div>
