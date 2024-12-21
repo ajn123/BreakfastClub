@@ -30,7 +30,7 @@ export default function Welcome() {
                         className="mb-8"
                     >
                         <h1 className="text-6xl md:text-7xl font-bold text-orange-600 mb-4">
-                            Breakfast Club DC
+                            DC Offline
                         </h1>
                         <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
                     </motion.div>
@@ -42,7 +42,7 @@ export default function Welcome() {
                         transition={{ delay: 0.3 }}
                         className="text-2xl md:text-3xl text-gray-700 mb-8 font-light"
                     >
-                        Start Your Day with Great
+                        Start Your Day with Greattnnttn
                     </motion.p>
 
                     {/* Description */}
