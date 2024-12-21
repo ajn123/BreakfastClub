@@ -124,6 +124,7 @@ jobs:
 
     - name: Build Docker image
       run: |
+        cd api
         docker compose build
 
     - name: Push Docker image
