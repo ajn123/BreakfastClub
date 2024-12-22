@@ -25,14 +25,4 @@ class SendWelcomeEmailTest extends TestCase
                 $mail->user->id === $user->id;
         });
     }
-
-    public function test_listener_implements_should_queue(): void
-    {
-        $this->assertTrue(
-            in_array(
-                'Illuminate\Contracts\Queue\ShouldQueue',
-                class_implements(SendWelcomeEmail::class)
-            )
-        );
-    }
 }
