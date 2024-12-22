@@ -5,8 +5,6 @@ namespace Tests;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use App\Http\Middleware\VerifyCsrfToken;
 
 abstract class TestCase extends BaseTestCase
 {
