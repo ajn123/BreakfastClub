@@ -5,6 +5,7 @@ namespace Tests\Feature\Mail;
 use Tests\TestCase;
 use App\Models\User;
 use App\Mail\WelcomeMail;
+use App\Events\UserRegistered;
 use Illuminate\Support\Facades\Mail;
 
 class WelcomeMailTest extends TestCase
@@ -54,6 +55,26 @@ class WelcomeMailTest extends TestCase
         $mailable->assertSeeInHtml('Instagram');
         $mailable->assertSeeInHtml('Twitter');
         $mailable->assertSeeInHtml('Facebook');
+    }
+
+    public function test_welcome_email_is_sent_when_user_registered_event_fires(): void
+    {
+        Mail::fake();
+
+        $user = User::factory()->create([
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+        ]);
+
+        // Fire the UserRegistered event
+        event(new UserRegistered($user));
+
+        // Assert the welcome email was queued
+        Mail::assertQueued(WelcomeMail::class, function ($mail) use ($user) {
+            return $mail->hasTo($user->email) &&
+                $mail->user->id === $user->id &&
+                $mail->user->name === $user->name;
+        });
     }
 
     public function test_welcome_email_has_valid_links(): void

@@ -8,9 +8,8 @@ use App\Events\UserRegistered;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendWelcomeEmail implements ShouldQueue
+class SendWelcomeEmail
 {
     use InteractsWithQueue;
 
