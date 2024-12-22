@@ -7,17 +7,7 @@ import { PageProps } from '@/types/index';
 export default function Dashboard({ auth }: PageProps) {
     return (
         <AuthenticatedLayout
-            header={
-                <motion.h2
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-xl font-semibold leading-tight text-orange-600"
-                >
-                    Dashboard
-                </motion.h2>
-            }
         >
-            <Head title="Dashboard" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
