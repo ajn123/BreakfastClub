@@ -5,14 +5,12 @@ namespace Tests\Unit\Listeners;
 use Tests\TestCase;
 use App\Models\User;
 use App\Mail\WelcomeMail;
+use App\Events\UserRegistered;
 use App\Listeners\SendWelcomeEmail;
 use Illuminate\Support\Facades\Mail;
-use App\Events\UserRegistered;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SendWelcomeEmailTest extends TestCase
 {
-
     public function test_listener_sends_welcome_email(): void
     {
         Mail::fake();

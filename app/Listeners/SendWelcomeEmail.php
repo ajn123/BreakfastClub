@@ -2,14 +2,13 @@
 
 namespace App\Listeners;
 
+use App\Models\User;
 use App\Mail\WelcomeMail;
-use Illuminate\Support\Facades\Mail;
 use App\Events\UserRegistered;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Queue\SerializesModels;
-use App\Models\User;
 
 class SendWelcomeEmail implements ShouldQueue
 {

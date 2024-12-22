@@ -6,13 +6,9 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Events\UserRegistered;
-use App\Listeners\SendWelcomeEmail;
 
 class WelcomeMailTest extends TestCase
 {
-
     public function test_welcome_email_is_sent_after_registration(): void
     {
         Mail::fake();
