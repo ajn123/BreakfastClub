@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Mail\WelcomeMail;
 use App\Events\UserRegistered;
 use Illuminate\Support\Facades\Mail;
+use App\Listeners\SendWelcomeEmail;
 
 class WelcomeMailTest extends TestCase
 {
@@ -76,6 +77,7 @@ class WelcomeMailTest extends TestCase
                 $mail->user->name === $user->name;
         });
     }
+
 
     public function test_welcome_email_has_valid_links(): void
     {
