@@ -39,6 +39,7 @@ return [
 
         'smtp' => [
             'transport' => 'smtp',
+            'scheme' => 'smtp',
             'host' => env('MAIL_HOST', 'mailhog'),
             'port' => env('MAIL_PORT', 1025),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),

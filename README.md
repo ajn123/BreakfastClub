@@ -2,8 +2,6 @@
 [![Laravel CI](https://github.com/ajn123/BreakfastClub/actions/workflows/ci.yml/badge.svg)](https://github.com/ajn123/BreakfastClub/actions/workflows/ci.yml)
 
 
-
-
 # Getting Started 
 
 - Make sure you have Docker and Docker Compose installed.
@@ -28,7 +26,7 @@ The application should be hot reloaded when you make changes to the code.
 
 | Service    | Port  | Description                               |
 |------------|-------|-------------------------------------------|
-| Laravel    | 8000  | Main API Application                      |
+| Laravel    | 80    | Main API Application                      |
 | Vite       | 5173  | Frontend Development Server               |
-| Mailhog    | 8025  | Email Testing Web Interface               |
+| Mailpit    | 1025  | Email Testing Web Interface               |
 
