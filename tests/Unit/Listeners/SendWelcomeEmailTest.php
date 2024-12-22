@@ -7,19 +7,18 @@ use App\Models\User;
 use App\Mail\WelcomeMail;
 use App\Listeners\SendWelcomeEmail;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Auth\Events\Registered;
+use App\Events\UserRegistered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SendWelcomeEmailTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function test_listener_sends_welcome_email(): void
     {
         Mail::fake();
 
         $user = User::factory()->create();
-        $event = new Registered($user);
+        $event = new UserRegistered($user);
 
         $listener = new SendWelcomeEmail;
         $listener->handle($event);

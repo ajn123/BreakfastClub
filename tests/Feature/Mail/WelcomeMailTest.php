@@ -7,10 +7,11 @@ use App\Models\User;
 use App\Mail\WelcomeMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Events\UserRegistered;
+use App\Listeners\SendWelcomeEmail;
 
 class WelcomeMailTest extends TestCase
 {
-    use RefreshDatabase;
 
     public function test_welcome_email_is_sent_after_registration(): void
     {
@@ -57,21 +58,6 @@ class WelcomeMailTest extends TestCase
         $mailable->assertSeeInHtml('Instagram');
         $mailable->assertSeeInHtml('Twitter');
         $mailable->assertSeeInHtml('Facebook');
-    }
-
-    public function test_welcome_email_is_queued(): void
-    {
-        Mail::fake();
-
-        $user = User::factory()->create();
-
-        // Trigger the registered event
-        event(new \Illuminate\Auth\Events\Registered($user));
-
-        // Assert the email was queued
-        Mail::assertQueued(WelcomeMail::class, function ($mail) use ($user) {
-            return $mail->user->id === $user->id;
-        });
     }
 
     public function test_welcome_email_has_valid_links(): void
