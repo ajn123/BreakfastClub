@@ -4,11 +4,13 @@
 
 # Getting Started 
 
+The dockerfile configuration was mostly taken from https://github.com/acadea/laravel-sail-nginx-php-fpm/tree/main
+and updated to php 8.2.
+
+
 - Make sure you have Docker and Docker Compose installed.
 ```
 ./vendor/bin/sail up
-sail artisan migrate
-sail npm run dev  # really important or you won't see anything
 ```
 The application will be available at http://localhost:80
 The application should be hot reloaded when you make changes to the code.
