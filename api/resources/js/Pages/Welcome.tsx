@@ -42,7 +42,7 @@ export default function Welcome() {
                         transition={{ delay: 0.3 }}
                         className="text-2xl md:text-3xl text-gray-700 mb-8 font-light"
                     >
-                        Start Your Day with Greattnnttn
+                        Start Your Day with Great
                     </motion.p>
 
                     {/* Description */}
