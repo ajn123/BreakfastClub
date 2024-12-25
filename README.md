@@ -9,6 +9,7 @@ and updated to php 8.2.
 
 
 - Make sure you have Docker and Docker Compose installed.
+- Make sure you copy a .env.example file to .env and fill in the values.
 ```
 cd api
 docker compose -f docker-compose.yml build
