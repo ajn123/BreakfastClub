@@ -13,15 +13,7 @@ REMOTE_DIR="/root"  # Replace with the desired path on the droplet
 
 # SSH into the remote droplet and run commands
 ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
-    # Check if composer is installed
-    if ! command -v composer &> /dev/null; then
-        echo "Installing Composer..."
-        curl -sS https://getcomposer.org/installer | php
-        mv composer.phar /usr/local/bin/composer
-        chmod +x /usr/local/bin/composer
-    else
-        echo "Composer is already installed"
-    fi
+
 
 
     # Check if Docker is installed
@@ -44,16 +36,6 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
         chmod +x /usr/local/bin/docker-compose
     else
         echo "Docker Compose is already installed"
-    fi
-
-    # Check if npm is installed
-    if ! command -v npm &> /dev/null; then
-        echo "Installing npm..."
-        # First install Node.js which includes npm
-        curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-        apt-get install -y nodejs
-    else
-        echo "npm is already installed"
     fi
 
     # Navigate to the api folder
@@ -82,7 +64,6 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
 
     # Start the Docker containers
     echo "Starting Docker containers..."
-
 
     # Remove any existing mysql.lock file if it exists
     rm -f ~/.sail/data/mysql/mysql.sock.lock;

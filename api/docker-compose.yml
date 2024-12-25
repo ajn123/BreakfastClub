@@ -64,7 +64,7 @@ services:
       - php-fpm
     volumes:
       - ${NGINX_SSL_PATH}:/etc/nginx/ssl
-      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+      - laravel-files:/var/www/laravel/current
       - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
       - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
     ports:
@@ -79,7 +79,7 @@ services:
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
     volumes:
-      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
+      - laravel-files:/var/www/laravel/current
     networks:
       - sail
     expose:
@@ -89,7 +89,7 @@ services:
     build:
       context: ./docker/laravel-horizon
     volumes:
-      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - laravel-files:/var/www/laravel/current
       - ./docker/laravel-horizon/supervisord.d:/etc/supervisord.d
     depends_on:
       - php-fpm
@@ -132,4 +132,6 @@ volumes:
   sail-redis:
     driver: local
   sail-meilisearch:
+    driver: local
+  laravel-files:
     driver: local
