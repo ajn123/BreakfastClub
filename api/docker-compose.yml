@@ -27,6 +27,7 @@ services:
   ##            - selenium
   mysql:
     image: 'mysql/mysql-server:8.0'
+    command: --skip-host-cache --skip-name-resolve
     ports:
       - '${FORWARD_DB_PORT:-3306}:3306'
     environment:
@@ -75,7 +76,8 @@ services:
 
   php-fpm:
     build:
-      context: "./docker/php-fpm"
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
     volumes:
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
     networks:
