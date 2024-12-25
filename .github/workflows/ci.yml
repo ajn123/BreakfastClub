@@ -33,6 +33,11 @@ jobs:
           php-version: '8.2'
           extensions: mbstring, dom, fileinfo, mysql, redis
           coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
           
       - name: Copy .env
         run: |
@@ -43,6 +48,7 @@ jobs:
         run: |
           cd api
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          npm install
           
       - name: Generate key
         run: |
@@ -64,6 +70,7 @@ jobs:
           DB_PASSWORD: password
         run: |
           cd api
+          npm run build
           php artisan test
 
   
