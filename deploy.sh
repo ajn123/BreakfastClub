@@ -46,13 +46,12 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
     git clone https://github.com/ajn123/BreakfastClub.git
 ENDSSH
 
-
+# Copy .env file to the remote droplet
 scp "$PROJECT_DIR/.env" "$REMOTE_USER@$DROPLET_IP:$REMOTE_DIR/BreakfastClub/api/.env"
 
 
 # SSH into the remote droplet and run commands
 ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
-    # Build the Docker containers
 
 
     echo "Building Docker containers..."
