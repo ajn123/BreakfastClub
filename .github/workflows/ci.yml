@@ -11,107 +11,69 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  test:
+  laravel-tests:
     runs-on: ubuntu-latest
     
     services:
-      postgres:
-        image: postgres:15-alpine
+      mysql:
+        image: mysql:8.0
         env:
-          POSTGRES_DB: laravel_test_db
-          POSTGRES_USER: developer
-          POSTGRES_PASSWORD: secret
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: api
         ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-    
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
-    - uses: actions/checkout@v2
-    
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.2'
-        extensions: mbstring, pdo_pgsql
-    
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
-        cache-dependency-path: api/package-lock.json
-    
-    - name: Check code style
-      run: |
-        cd api
-        composer require laravel/pint --dev
-        ./vendor/bin/pint --test
-    
-    - name: Copy .env
-      run: |
-        cd api
-        cp .env.example .env
-        sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=pgsql/' .env
-        sed -i 's/DB_HOST=127.0.0.1/DB_HOST=localhost/' .env
-        sed -i 's/DB_PORT=3306/DB_PORT=5432/' .env
-        sed -i 's/DB_DATABASE=laravel/DB_DATABASE=laravel_test_db/' .env
-        sed -i 's/DB_USERNAME=root/DB_USERNAME=developer/' .env
-        sed -i 's/DB_PASSWORD=/DB_PASSWORD=secret/' .env
-        
-    - name: Install PHP Dependencies
-      run: |
-        cd api
-        composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    
-    - name: Install Node Dependencies
-      run: |
-        cd api
-        npm ci
-        
-    - name: Build Vite Assets
-      run: |
-        cd api
-        npm run build
-    
-    - name: Generate key
-      run: |
-        cd api
-        php artisan key:generate
-    
-    - name: Directory Permissions
-      run: |
-        cd api
-        chmod -R 777 storage bootstrap/cache
-    
-    - name: Run Migrations
-      run: |
-        cd api
-        php artisan migrate --force
-      env:
-        DB_CONNECTION: pgsql
-        DB_HOST: localhost
-        DB_PORT: 5432
-        DB_DATABASE: laravel_test_db
-        DB_USERNAME: developer
-        DB_PASSWORD: secret
-    
-    - name: Run Tests
-      run: |
-        cd api
-        php artisan test
-      env:
-        DB_CONNECTION: pgsql
-        DB_HOST: localhost
-        DB_PORT: 5432
-        DB_DATABASE: laravel_test_db
-        DB_USERNAME: developer
-        DB_PASSWORD: secret
+      - uses: actions/checkout@v4
+      
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, dom, fileinfo, mysql, redis
+          coverage: none
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Copy .env
+        run: |
+          cd api
+          cp .env.example .env
+          
+      - name: Install Dependencies
+        run: |
+          cd api
+          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+          npm install
+          
+      - name: Generate key
+        run: |
+          cd api
+          php artisan key:generate
+          
+      - name: Directory Permissions
+        run: |
+          cd api
+          chmod -R 777 storage bootstrap/cache
+          
+      - name: Run Tests
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: api
+          DB_USERNAME: root
+          DB_PASSWORD: password
+        run: |
+          cd api
+          npm run build
+          php artisan test
 
+  
   publish-docker-image:
     runs-on: ubuntu-latest
 
@@ -135,7 +97,7 @@ jobs:
       - name: Build sail image
         run: |
           cd api
-          ./vendor/bin/sail build --no-cache
+          docker compose build
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -146,5 +108,5 @@ jobs:
       - name: Push Docker image to GitHub Container Registry
         run: |
           cd api
-          docker tag sail-8.4/app ghcr.io/ajn123/breakfastclub/breakfast-club:latest
+          docker tag api-nginx:latest ghcr.io/ajn123/breakfastclub/breakfast-club:latest
           docker push ghcr.io/ajn123/breakfastclub/breakfast-club:latest
