@@ -10,12 +10,17 @@ and updated to php 8.2.
 
 - Make sure you have Docker and Docker Compose installed.
 ```
-./vendor/bin/sail up
+cd api
+docker compose -f docker-compose.yml build
+docker compose -f docker-compose.yml up
 
+# to run migrations
 docker-compose exec php-fpm php /var/www/laravel/current/artisan migrate 
 ```
 The application will be available at http://localhost:80
 The application should be hot reloaded when you make changes to the code.
+
+
 
 # Notes
 
@@ -23,7 +28,7 @@ The application should be hot reloaded when you make changes to the code.
 - [x] Get docker compose to work with vite.
 - [x] Get docker compose to work with mailhog.
 - [x] Get docker compose to work with nginx.
-- [ ] Get 
+- [ ] Get a local database working.
 - [ ] Build out questionnaire.
 
 
