@@ -59,7 +59,7 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
 
     chmod -R 777 .
 
-    docker compose -f docker-compose.yml build
+    docker compose -f docker-compose.prod.yml build
 
     # Start the Docker containers
     echo "Starting Docker containers..."
@@ -69,7 +69,7 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
 
 
     # Start docker compose
-    docker compose -f docker-compose.yml up -d
+    docker compose -f docker-compose.prod.yml up -d
     docker-compose exec php-fpm php /var/www/laravel/current/artisan migrate
 
 
