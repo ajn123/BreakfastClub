@@ -1,17 +1,49 @@
+# Build stage for Composer dependencies
+FROM composer:latest as composer
+
+WORKDIR /app
+
+COPY . .
+
+
+RUN composer install \
+    --no-interaction \
+    --prefer-dist \
+    --no-dev
+
+# Build stage for Node dependencies
+FROM node:latest as node
+
+WORKDIR /app
+
+COPY --from=composer /app/vendor/ ./vendor/
+COPY . .
+
+RUN npm install 
+
+RUN npm run build
+
+# Copy from build stages to final image
 # Copied from cyberduck/php-fpm-laravel
 #https://github.com/Cyber-Duck/php-fpm-laravel/blob/8.1/Dockerfile
+
 FROM php:8.2-fpm
 
-MAINTAINER support@cyber-duck.co.uk
 
 ENV COMPOSER_MEMORY_LIMIT='-1'
 
+
+# Update GPG keys before installing packages
 RUN apt-get update && \
-    apt-get install -y --force-yes --no-install-recommends \
+    apt-get install -y gnupg2 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+# Then install your packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     libmemcached-dev \
     libzip-dev \
     libz-dev \
-    libzip-dev \
     libpq-dev \
     libjpeg-dev \
     libpng-dev \
@@ -26,7 +58,8 @@ RUN apt-get update && \
     libreadline-dev \
     libgmp-dev \
     mariadb-client \
-    unzip
+    unzip \
+    && apt-get clean 
 
 # Install soap extention
 RUN docker-php-ext-install soap
@@ -43,9 +76,6 @@ RUN docker-php-ext-install zip
 # Install the PHP pdo_mysql extention
 RUN docker-php-ext-install pdo_mysql
 
-# Install the PHP pdo_pgsql extention
-RUN docker-php-ext-install pdo_pgsql
-
 # Install the PHP bcmath extension
 RUN docker-php-ext-install bcmath
 
@@ -60,21 +90,6 @@ RUN docker-php-ext-install gmp
 #####################################
 RUN pecl install redis && docker-php-ext-enable redis
 
-#####################################
-# Imagick:
-#####################################
-
-RUN pecl install imagick && \
-    docker-php-ext-enable imagick
-
-#####################################
-# GD:
-#####################################
-
-# Install the PHP gd library
-RUN docker-php-ext-install gd && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install gd
 
 #####################################
 # xDebug:
@@ -114,7 +129,7 @@ RUN chmod 0644 /etc/cron.d/laravel-scheduler
 #--------------------------------------------------------------------------
 #
 
-ADD ./laravel.ini /usr/local/etc/php/conf.d
+ADD ./docker/php-fpm/laravel.ini /usr/local/etc/php/conf.d
 
 #####################################
 # Aliases:
@@ -142,9 +157,29 @@ RUN rm -r /var/lib/apt/lists/*
 
 RUN usermod -u 1000 www-data
 
+
+WORKDIR /var/www/laravel/current
+
+COPY . .
+
+COPY composer.json ./
+RUN composer install
+
+# These COPY commands will copy files from the 'node' build stage to:
+# 1. /var/www/laravel/current/public/build - Contains the compiled frontend assets
+# 2. /var/www/laravel/current/node_modules - Contains the Node.js dependencies
+
+COPY --from=node /app/public/build/ /var/www/laravel/current/public/build
+COPY --from=node /app/node_modules/ /var/www/laravel/current/node_modules
+
+RUN groupadd -g 1000 laravel && \
+    usermod -a -G laravel www-data && \
+    chown -R www-data:laravel storage public && \
+    chmod -R 775 storage public
+
 WORKDIR /var/www
 
-COPY ./docker-entrypoint.sh /usr/local/bin/
+COPY ./docker/php-fpm/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /
 ENTRYPOINT ["docker-entrypoint.sh"]
