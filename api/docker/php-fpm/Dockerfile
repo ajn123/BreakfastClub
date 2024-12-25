@@ -5,22 +5,15 @@ WORKDIR /app
 
 COPY . .
 
-
-RUN composer install \
-    --no-interaction \
-    --prefer-dist \
-    --no-dev
-
+RUN composer install 
 # Build stage for Node dependencies
-FROM node:latest as node
 
+
+FROM node:18 as node
 WORKDIR /app
-
-COPY --from=composer /app/vendor/ ./vendor/
 COPY . .
-
-RUN npm install 
-
+COPY --from=composer /app/vendor/ ./vendor/
+RUN npm install
 RUN npm run build
 
 # Copy from build stages to final image
@@ -31,7 +24,6 @@ FROM php:8.2-fpm
 
 
 ENV COMPOSER_MEMORY_LIMIT='-1'
-
 
 # Update GPG keys before installing packages
 RUN apt-get update && \
@@ -91,10 +83,6 @@ RUN docker-php-ext-install gmp
 RUN pecl install redis && docker-php-ext-enable redis
 
 
-#####################################
-# xDebug:
-#####################################
-
 # Install the xdebug extension
 RUN pecl install xdebug
 
@@ -122,12 +110,6 @@ RUN . ~/.bashrc
 
 RUN echo "* * * * * www-data /usr/local/bin/php /var/www/artisan schedule:run >> /dev/null 2>&1"  >> /etc/cron.d/laravel-scheduler
 RUN chmod 0644 /etc/cron.d/laravel-scheduler
-
-#
-#--------------------------------------------------------------------------
-# Final Touch
-#--------------------------------------------------------------------------
-#
 
 ADD ./docker/php-fpm/laravel.ini /usr/local/etc/php/conf.d
 
@@ -157,20 +139,23 @@ RUN rm -r /var/lib/apt/lists/*
 
 RUN usermod -u 1000 www-data
 
-
 WORKDIR /var/www/laravel/current
 
-COPY . .
-
-COPY composer.json ./
-RUN composer install
 
 # These COPY commands will copy files from the 'node' build stage to:
 # 1. /var/www/laravel/current/public/build - Contains the compiled frontend assets
 # 2. /var/www/laravel/current/node_modules - Contains the Node.js dependencies
 
-COPY --from=node /app/public/build/ /var/www/laravel/current/public/build
-COPY --from=node /app/node_modules/ /var/www/laravel/current/node_modules
+# Build frontend assets
+
+# Copy built assets from node stage
+
+COPY . .
+
+COPY --from=composer /app/vendor/ ./vendor/
+
+COPY --from=node /app/public/build/ ./public/build/
+COPY --from=node /app/node_modules/ ./node_modules/
 
 RUN groupadd -g 1000 laravel && \
     usermod -a -G laravel www-data && \
@@ -183,6 +168,10 @@ COPY ./docker/php-fpm/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN ln -s /usr/local/bin/docker-entrypoint.sh /
 ENTRYPOINT ["docker-entrypoint.sh"]
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD test -d /var/www/laravel/current/node_modules || exit 1
+
 
 EXPOSE 9000
 CMD ["php-fpm"]
