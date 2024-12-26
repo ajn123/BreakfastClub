@@ -51,7 +51,7 @@ sail artisan dusk
 
 | Service    | Port  | Description                               |
 |------------|-------|-------------------------------------------|
-| Laravel    | 80    | Main API Application                      |
+| Laravel    | 80    | Main Application                      |
 | Vite       | 5173  | Frontend Development Server               |
 | Mailpit    | 1025  | Email Testing Web Interface               |
 
