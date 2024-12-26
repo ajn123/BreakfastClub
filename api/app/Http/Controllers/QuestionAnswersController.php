@@ -25,14 +25,17 @@ class QuestionAnswersController extends Controller
             'answers.*.question_id' => 'required|exists:questions,id',
             'answers.*.answer' => 'nullable|string',
             'answers.*.options' => 'nullable|array',
+            'answers.*.options.*' => 'nullable|string',
         ]);
 
         DB::transaction(function () use ($validated) {
             foreach ($validated['answers'] as $answer) {
-                QuestionAnswer::create([
+                QuestionAnswer::updateOrCreate([
                     'user_id' => Auth::id(),
                     'question_id' => $answer['question_id'],
+                ], [
                     'answer' => $answer['answer'],
+                    'options' => $answer['options'],
                 ]);
             }
         });

@@ -20,7 +20,7 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
-        'hasCompletedQuestions' => QuestionAnswer::where('user_id', auth()->id())->exists(),
+        'hasCompletedQuestions' => false,
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -35,4 +35,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/question-answers', [QuestionAnswersController::class, 'index'])->name('question-answers.index');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

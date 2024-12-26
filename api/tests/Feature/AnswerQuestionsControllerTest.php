@@ -14,14 +14,17 @@ test('can store question answers', function () {
                 [
                     'question_id' => $questions[0]->id,
                     'answer' => 'Test answer 1',
+                    'options' => [],
                 ],
                 [
                     'question_id' => $questions[1]->id,
                     'answer' => 'Test answer 2',
+                    'options' => [],
                 ],
                 [
                     'question_id' => $questions[2]->id,
                     'answer' => 'Test answer 3',
+                    'options' => [],
                 ],
             ],
         ]);
