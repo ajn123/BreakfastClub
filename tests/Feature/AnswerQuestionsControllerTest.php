@@ -34,7 +34,7 @@ test('can store question answers', function () {
         $this->assertDatabaseHas('question_answers', [
             'user_id' => $user->id,
             'question_id' => $question->id,
-            'answer' => 'Test answer '.($index + 1),
+            'answer' => 'Test answer ' . ($index + 1),
         ]);
     }
 });
@@ -45,10 +45,10 @@ test('can view questionnaire index page', function () {
 
     $response = $this
         ->actingAs($user)
-        ->get(route('questionnaire.index'));
+        ->get(route('question-answers.index'));
 
     $response->assertInertia(
-        fn ($page) => $page
+        fn($page) => $page
             ->component('Questionnaire/Index')
             ->has('initialQuestions', 3)
     );
