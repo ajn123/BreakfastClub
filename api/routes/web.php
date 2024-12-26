@@ -7,6 +7,7 @@ use App\Http\Controllers\QuestionsController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\QuestionnairesController;
 use App\Http\Controllers\QuestionAnswersController;
+use App\Models\QuestionAnswer;
 
 Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
@@ -19,18 +20,21 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'hasCompletedQuestions' => QuestionAnswer::where('user_id', auth()->id())->exists(),
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/questionnaire', [QuestionnairesController::class, 'index'])->name('questionnaire.index');
+
+    Route::get('/questions', [QuestionsController::class, 'index'])->name('questions.index');
+
+    Route::post('/question-answers', [QuestionAnswersController::class, 'store'])->name('question-answers.store');
+    Route::get('/question-answers', [QuestionAnswersController::class, 'index'])->name('question-answers.index');
 });
 
-Route::get('/questions', [QuestionsController::class, 'index'])->name('questions.index');
 
-Route::post('/question-answers', [QuestionAnswersController::class, 'store'])->name('question-answers.store');
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
