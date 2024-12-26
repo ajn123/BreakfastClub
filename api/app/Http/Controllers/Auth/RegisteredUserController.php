@@ -7,13 +7,14 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Mail\WelcomeMail;
 use Illuminate\Http\Request;
+use App\Events\UserRegistered;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -42,10 +43,15 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        event(new UserRegistered($user));
 
         // Send welcome email
         Mail::to($user->email)->send(new WelcomeMail($user));
+
+        Mail::to($user->email)
+            ->queue(new WelcomeMail($user));
+
+        Log::info('User registered: '.$user->email);
 
         Auth::login($user);
 

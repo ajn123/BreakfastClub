@@ -3,8 +3,10 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuestionsController;
 use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Controllers\QuestionnaireController;
+use App\Http\Controllers\QuestionnairesController;
+use App\Http\Controllers\QuestionAnswersController;
 
 Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
@@ -24,10 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/questionnaire', [QuestionnaireController::class, 'index'])->name('questionnaire.index');
-    Route::post('/questionnaire', [QuestionnaireController::class, 'store'])->name('questionnaire.store');
-    Route::put('/questionnaire', [QuestionnaireController::class, 'update'])->name('questionnaire.update');
-    Route::get('/questionnaire/data', [QuestionnaireController::class, 'show'])->name('questionnaire.show');
+    Route::get('/questionnaire', [QuestionnairesController::class, 'index'])->name('questionnaire.index');
 });
+
+Route::get('/questions', [QuestionsController::class, 'index'])->name('questions.index');
+
+Route::post('/question-answers', [QuestionAnswersController::class, 'store'])->name('question-answers.store');
 
 require __DIR__.'/auth.php';

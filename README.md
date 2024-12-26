@@ -55,3 +55,10 @@ sail artisan dusk
 | Vite       | 5173  | Frontend Development Server               |
 | Mailpit    | 1025  | Email Testing Web Interface               |
 
+
+
+## Useful Commands
+```
+sail artisan queue:work
+sail artisan pail
+```
