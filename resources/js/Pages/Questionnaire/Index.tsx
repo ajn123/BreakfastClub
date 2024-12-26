@@ -35,6 +35,8 @@ interface QuestionAnswer {
 export default function Questionnaire({ initialQuestions }: PageProps) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [questions, setQuestions] = useState(initialQuestions);
+    const [submissionErrors, setSubmissionErrors] = useState<Record<string, string[]>>({});
+
 
     const { data, setData, post, processing, errors } = useForm<{ answers: QuestionAnswer[] }>({
         answers: questions.map(q => ({
@@ -73,6 +75,7 @@ export default function Questionnaire({ initialQuestions }: PageProps) {
                 });
             },
             onError: (errors) => {
+                setSubmissionErrors(errors);
                 console.error('Submission errors:', errors);
             }
         });
@@ -155,7 +158,7 @@ export default function Questionnaire({ initialQuestions }: PageProps) {
                                 className={`p-4 rounded-lg text-left transition-all
                                     ${data.answers.find(a => a.question_id === question.id)?.options.includes(option)
                                         ? 'bg-orange-100 text-orange-700 border-2 border-orange-500'
-                                        : 'bg-white text-gray-600 border-2 border-transparent hover:bg-orange-50'}`}
+                                        : 'bg-white text-gray-600 border-2 border-transparent hover:bg-orange-200 hover:text-black'}`}
                             >
                                 {option}
                             </button>
@@ -194,6 +197,44 @@ export default function Questionnaire({ initialQuestions }: PageProps) {
             <Head title="Questionnaire - The Breakfast Club" />
 
             <div className="max-w-4xl mx-auto px-4 py-12">
+                {/* Question counter */}
+                <motion.div
+                    className="text-center mb-6 text-2xl font-bold text-orange-500"
+                    key={currentQuestionIndex}
+                    initial={{ x: 20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{ x: -20, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                >
+                    Question {currentQuestionIndex + 1} of {questions.length}
+                </motion.div>
+
+                {/* Question navigation circles */}
+                <div className="flex justify-center gap-2 mb-8">
+                    {questions.map((_, index) => (
+                        <button
+                            key={index}
+                            onClick={() => setCurrentQuestionIndex(index)}
+                            className={`w-[30px] h-[30px] rounded-full transition-colors flex items-center justify-center text-sm font-medium ${index === currentQuestionIndex
+                                ? 'bg-orange-500 text-white'
+                                : 'bg-orange-200 hover:bg-orange-300 text-gray-700'
+                                }`}
+                            aria-label={`Go to question ${index + 1}`}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                </div>
+
+                {Object.keys(submissionErrors).length > 0 && (
+                    <div className="mb-8 bg-red-50 border-2 border-red-200 rounded-lg p-4">
+                        <h3 className="text-red-700 font-semibold mb-2">Please correct the following errors:</h3>
+                        <ul className="list-disc list-inside text-red-600">
+                            Fill out all questions to complete your profile.
+                        </ul>
+                    </div>
+                )}
+
                 {/* Progress bar */}
                 <motion.div
                     className="h-1 bg-orange-200 rounded-full mb-12"

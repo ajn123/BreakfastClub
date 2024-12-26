@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Question;
 use Illuminate\Support\Facades\Log;
 
+
 class QuestionsController extends Controller
 {
     public function index()
     {
         try {
-            $questions = Question::all();
+            $questions = Question::active()->get();
             Log::info('Questions loaded:', ['count' => $questions->count()]);
 
             return response()->json([

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('type');
             $table->string('field');
             $table->json('options');
+            $table->boolean('is_required')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Link } from '@inertiajs/react';
 import { PageProps } from '@/types/index';
 
-export default function Dashboard({ auth }: PageProps) {
+export default function Dashboard({ auth, hasCompletedQuestions }: PageProps) {
     return (
         <AuthenticatedLayout
         >
@@ -84,9 +84,9 @@ export default function Dashboard({ auth }: PageProps) {
 
 
 
-                        {!auth.user.questionnaire && (
+                        {!hasCompletedQuestions && (
                             <Link
-                                href={route('questionnaire.index')}
+                                href={route('question-answers.index')}
                                 className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition"
                             >
                                 <div className="p-6">

@@ -66,6 +66,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'time',
                 'field' => 'preferred_breakfast_time',
                 'options' => [],
+                'is_required' => false,
             ],
             [
                 'title' => 'What are your hobbies?',
@@ -89,6 +90,7 @@ class QuestionSeeder extends Seeder
                 'type' => 'text',
                 'field' => 'bio',
                 'options' => [],
+
             ],
         ];
 
