@@ -1,7 +1,6 @@
 <?php
 
 use Inertia\Inertia;
-use App\Models\QuestionAnswer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
@@ -35,4 +34,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/question-answers', [QuestionAnswersController::class, 'index'])->name('question-answers.index');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
