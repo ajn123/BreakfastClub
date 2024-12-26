@@ -8,20 +8,28 @@ The dockerfile configuration was mostly taken from https://github.com/acadea/lar
 and updated to php 8.2.
 
 
+# Run Development
 - Make sure you have Docker and Docker Compose installed.
 - Make sure you copy a .env.example file to .env and fill in the values.
 ```
 cd api
-docker compose -f docker-compose.yml build
-docker compose -f docker-compose.yml up
+sail up -d
+sail npm run dev
+sail artisan migrate
+# treat sail as you would any command with php artisan, replacing php with sail
+```
+
+# Run Production
+```
+cd api
+docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up
 
 # to run migrations
 docker-compose exec php-fpm php /var/www/laravel/current/artisan migrate 
 ```
 The application will be available at http://localhost:80
 The application should be hot reloaded when you make changes to the code.
-
-
 
 # Notes
 
@@ -38,7 +46,6 @@ Work in progress, still need to get this done.
 ```
 sail artisan dusk
 ```
-
 
 ## Application Ports
 
