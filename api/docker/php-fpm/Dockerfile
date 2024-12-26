@@ -50,6 +50,7 @@ RUN apt-get update && \
     libreadline-dev \
     libgmp-dev \
     mariadb-client \
+    libonig-dev \
     unzip \
     && apt-get clean 
 
@@ -76,6 +77,8 @@ RUN docker-php-ext-install intl
 
 # Install the PHP gmp extention
 RUN docker-php-ext-install gmp
+
+RUN docker-php-ext-install exif pcntl 
 
 #####################################
 # PHPRedis:
