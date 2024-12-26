@@ -9,6 +9,8 @@ class QuestionSeeder extends Seeder
 {
     public function run(): void
     {
+        Question::where('id', '>', 0)->delete();
+
         $questions = [
             [
                 'title' => 'Where do you prefer to meet?',
