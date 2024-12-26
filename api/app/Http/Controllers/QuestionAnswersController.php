@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\QuestionAnswer;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
-use App\Models\Question;
 
 class QuestionAnswersController extends Controller
 {
