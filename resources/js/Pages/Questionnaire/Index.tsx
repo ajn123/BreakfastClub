@@ -1,12 +1,12 @@
 import { Head, useForm } from '@inertiajs/react';
 import { PageProps, LocationPreference } from '@/types';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { router } from '@inertiajs/react';
 
 interface QuestionnaireData {
-    location_preference: LocationPreference;
+    location_preferences: string[];
     extroversion: number;
     openness: number;
     conscientiousness: number;
@@ -14,127 +14,36 @@ interface QuestionnaireData {
     conversation_topics: string[];
     preferred_breakfast_time: string;
     bio: string;
+    hobbies: string[];
 }
 
-export default function Questionnaire({ auth }: PageProps) {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+interface Question {
+    id: number;
+    title: string;
+    subtitle: string;
+    type: string;
+    field: string;
+    options: string[];
+}
 
-    const { data, setData, post, processing, errors } = useForm<QuestionnaireData>({
-        location_preference: '' as LocationPreference,
-        extroversion: 3,
-        openness: 3,
-        conscientiousness: 3,
-        food_preferences: [],
-        conversation_topics: [],
-        preferred_breakfast_time: '09:00',
-        bio: ''
+interface QuestionAnswer {
+    question_id: number;
+    answer: string;
+    options: string[];
+}
+
+export default function Questionnaire({ initialQuestions }: PageProps) {
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [questions, setQuestions] = useState(initialQuestions);
+
+    const { data, setData, post, processing, errors } = useForm<{ answers: QuestionAnswer[] }>({
+        answers: questions.map(q => ({
+            question_id: q.id,
+            answer: q.type === 'time' ? '09:00' : '',
+            options: []
+        }))
     });
 
-    const questions = [
-        {
-            id: 'location',
-            title: "Where do you prefer to meet?",
-            subtitle: "Select your preferred area for breakfast meetups",
-            type: 'select',
-            field: 'location_preference',
-            options: [
-                { value: 'NW', label: 'Northwest DC' },
-                { value: 'NE', label: 'Northeast DC' },
-                { value: 'SW', label: 'Southwest DC' },
-                { value: 'SE', label: 'Southeast DC' },
-                { value: 'NOVA', label: 'Northern Virginia' },
-                { value: 'MD', label: 'Maryland' }
-            ]
-        },
-        {
-            id: 'personality-extroversion',
-            title: "How do you feel about social interactions?",
-            subtitle: "Rate your comfort level in social situations",
-            type: 'scale',
-            field: 'extroversion',
-            labels: {
-                1: 'Very Introverted',
-                3: 'Balanced',
-                5: 'Very Extroverted'
-            }
-        },
-        {
-            id: 'personality-openness',
-            title: "How do you approach new experiences?",
-            subtitle: "Rate your openness to trying new things",
-            type: 'scale',
-            field: 'openness',
-            labels: {
-                1: 'Prefer Routine',
-                3: 'Balanced',
-                5: 'Love Adventure'
-            }
-        },
-        {
-            id: 'personality-conscientiousness',
-            title: "How do you approach tasks and responsibilities?",
-            subtitle: "Rate your level of organization and planning",
-            type: 'scale',
-            field: 'conscientiousness',
-            labels: {
-                1: 'Spontaneous',
-                3: 'Balanced',
-                5: 'Very Organized'
-            }
-        },
-        {
-            id: 'food-preferences',
-            title: "What are your favorite breakfast foods?",
-            subtitle: "Select all that apply",
-            type: 'multiSelect',
-            field: 'food_preferences',
-            options: [
-                'Pancakes',
-                'Waffles',
-                'Eggs Benedict',
-                'Avocado Toast',
-                'Omelette',
-                'Breakfast Burrito',
-                'Acai Bowl',
-                'French Toast',
-                'Bagels',
-                'Croissants'
-            ]
-        },
-        {
-            id: 'conversation-topics',
-            title: "What topics interest you most?",
-            subtitle: "Select your favorite conversation topics",
-            type: 'multiSelect',
-            field: 'conversation_topics',
-            options: [
-                'Technology',
-                'Arts & Culture',
-                'Business',
-                'Sports',
-                'Travel',
-                'Food',
-                'Politics',
-                'Science',
-                'Books',
-                'Movies & TV'
-            ]
-        },
-        {
-            id: 'breakfast-time',
-            title: "When do you prefer to have breakfast?",
-            subtitle: "Select your ideal breakfast time",
-            type: 'time',
-            field: 'preferred_breakfast_time'
-        },
-        {
-            id: 'bio',
-            title: "Tell us about yourself",
-            subtitle: "Share a brief bio with potential breakfast companions",
-            type: 'text',
-            field: 'bio'
-        }
-    ];
 
     const handleNext = () => {
         if (currentQuestionIndex < questions.length - 1) {
@@ -151,7 +60,7 @@ export default function Questionnaire({ auth }: PageProps) {
     };
 
     const handleSubmit = () => {
-        post(route('questionnaire.store'), {
+        post(route('question-answers.store'), {
             onSuccess: () => {
                 // Show success message and redirect to dashboard
                 router.visit(route('dashboard'), {
@@ -178,16 +87,18 @@ export default function Questionnaire({ auth }: PageProps) {
                             <button
                                 key={option.value}
                                 onClick={() => {
-                                    const field = question.field as keyof QuestionnaireData;
-                                    const currentValue = Array.isArray(data[field]) ? data[field] as string[] : [];
-                                    const newValue = currentValue.includes(option.value)
-                                        ? currentValue.filter(item => item !== option.value)
-                                        : [...currentValue, option.value];
-                                    setData(field, newValue);
+                                    const currentAnswer = data.answers.find(a => a.question_id === question.id);
+                                    if (currentAnswer) {
+                                        const newOptions = currentAnswer.options.includes(option.value)
+                                            ? currentAnswer.options.filter(item => item !== option.value)
+                                            : [...currentAnswer.options, option.value];
+                                        setData('answers', data.answers.map(a =>
+                                            a.question_id === question.id ? { ...a, options: newOptions } : a
+                                        ));
+                                    }
                                 }}
                                 className={`w-full p-4 rounded-lg text-left transition-all
-                                    ${Array.isArray(data[question.field as keyof QuestionnaireData]) &&
-                                        (data[question.field as keyof QuestionnaireData] as string[]).includes(option.value)
+                                    ${data.answers.find(a => a.question_id === question.id)?.options.includes(option.value)
                                         ? 'bg-orange-100 text-orange-700 border-2 border-orange-500'
                                         : 'bg-white text-gray-600 border-2 border-transparent hover:bg-orange-50'}`}
                             >
@@ -197,7 +108,6 @@ export default function Questionnaire({ auth }: PageProps) {
                     </div>
                 );
 
-
             case 'scale':
                 return (
                     <div className="space-y-6">
@@ -205,9 +115,11 @@ export default function Questionnaire({ auth }: PageProps) {
                             {[1, 2, 3, 4, 5].map((value) => (
                                 <button
                                     key={value}
-                                    onClick={() => setData(question.field as keyof QuestionnaireData, value)}
+                                    onClick={() => setData('answers', data.answers.map(a =>
+                                        a.question_id === question.id ? { ...a, answer: value.toString() } : a
+                                    ))}
                                     className={`w-16 h-16 rounded-full flex items-center justify-center text-xl font-semibold transition-all
-                                        ${data[question.field as keyof QuestionnaireData] === value
+                                        ${data.answers.find(a => a.question_id === question.id)?.answer === value.toString()
                                             ? 'bg-orange-500 text-white'
                                             : 'bg-white text-gray-600 hover:bg-orange-100'}`}
                                 >
@@ -230,15 +142,18 @@ export default function Questionnaire({ auth }: PageProps) {
                             <button
                                 key={option}
                                 onClick={() => {
-                                    const field = question.field as keyof QuestionnaireData;
-                                    const currentValue = data[field] as string[];
-                                    const newValue = currentValue.includes(option)
-                                        ? currentValue.filter(item => item !== option)
-                                        : [...currentValue, option];
-                                    setData(field, newValue);
+                                    const currentAnswer = data.answers.find(a => a.question_id === question.id);
+                                    if (currentAnswer) {
+                                        const newOptions = currentAnswer.options.includes(option)
+                                            ? currentAnswer.options.filter(item => item !== option)
+                                            : [...currentAnswer.options, option];
+                                        setData('answers', data.answers.map(a =>
+                                            a.question_id === question.id ? { ...a, options: newOptions } : a
+                                        ));
+                                    }
                                 }}
                                 className={`p-4 rounded-lg text-left transition-all
-                                    ${(data[question.field as keyof QuestionnaireData] as string[]).includes(option)
+                                    ${data.answers.find(a => a.question_id === question.id)?.options.includes(option)
                                         ? 'bg-orange-100 text-orange-700 border-2 border-orange-500'
                                         : 'bg-white text-gray-600 border-2 border-transparent hover:bg-orange-50'}`}
                             >
@@ -252,8 +167,10 @@ export default function Questionnaire({ auth }: PageProps) {
                 return (
                     <input
                         type="time"
-                        value={data[question.field as keyof QuestionnaireData] as string}
-                        onChange={(e) => setData(question.field as keyof QuestionnaireData, e.target.value)}
+                        value={data.answers.find(a => a.question_id === question.id)?.answer || '09:00'}
+                        onChange={(e) => setData('answers', data.answers.map(a =>
+                            a.question_id === question.id ? { ...a, answer: e.target.value } : a
+                        ))}
                         className="w-full p-4 text-2xl text-center bg-white rounded-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                     />
                 );
@@ -261,8 +178,10 @@ export default function Questionnaire({ auth }: PageProps) {
             case 'text':
                 return (
                     <textarea
-                        value={data[question.field as keyof QuestionnaireData] as string}
-                        onChange={(e) => setData(question.field as keyof QuestionnaireData, e.target.value)}
+                        value={data.answers.find(a => a.question_id === question.id)?.answer || ''}
+                        onChange={(e) => setData('answers', data.answers.map(a =>
+                            a.question_id === question.id ? { ...a, answer: e.target.value } : a
+                        ))}
                         className="w-full h-32 p-4 bg-white rounded-lg border-2 border-gray-200 focus:border-orange-500 focus:ring-2 focus:ring-orange-200"
                         placeholder="Type your answer here..."
                     />
