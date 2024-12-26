@@ -29,18 +29,9 @@ class SendWelcomeEmail implements ShouldQueue
     public function handle(UserRegistered $event): void
     {
         $this->user = $event->user;
-
-        Log::info('event', ['event' => $event]);
-
-        Log::error('user', ['user' => $event->user]);
-
-        Log::warning('user email', ['user email' => $event->user['email']]);
-
-        Log::warning('other email', ['user email' => $this->user->email]);
-
         try {
-            Mail::to($event->user->email)
-                ->queue(new WelcomeMail($event->user));
+            Log::info('Sending welcome email');
+            Mail::to($event->user->email)->queue(new WelcomeMail($event->user));
         } catch (\Exception $e) {
             Log::error('Failed to send welcome email', [
                 'user_id' => $this->user->id,
@@ -55,7 +46,7 @@ class SendWelcomeEmail implements ShouldQueue
     public function failed(UserRegistered $event, \Throwable $exception): void
     {
         // Log the failure
-        Log::error('Failed to send welcome email', [
+        Log::warning('Failed to send welcome email', [
             'user_id' => $event->user->id,
             'error' => $exception->getMessage(),
         ]);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -10,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('questionnaires', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             // Personality traits (1-5 scale)
             $table->integer('extroversion')->nullable();
             $table->integer('openness')->nullable();
@@ -23,6 +24,8 @@ return new class extends Migration
             // Additional info
             $table->text('bio')->nullable();
             $table->json('hobbies')->nullable();
+            $table->json('personality_scores')->nullable();
+            $table->json('preferences')->nullable();
             $table->timestamps();
         });
     }
