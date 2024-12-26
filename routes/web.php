@@ -1,13 +1,12 @@
 <?php
 
 use Inertia\Inertia;
+use App\Models\QuestionAnswer;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Middleware\RedirectIfAuthenticated;
-use App\Http\Controllers\QuestionnairesController;
 use App\Http\Controllers\QuestionAnswersController;
-use App\Models\QuestionAnswer;
 
 Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
@@ -36,5 +35,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/question-answers', [QuestionAnswersController::class, 'index'])->name('question-answers.index');
 });
 
-
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
