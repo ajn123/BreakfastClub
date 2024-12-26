@@ -102,6 +102,15 @@ export default function Login({
                     </PrimaryButton>
                 </div>
             </form>
+            <div className="mt-8 text-center">
+                <p className="text-white mb-4">Don't have an account yet?</p>
+                <Link
+                    href={route('register')}
+                    className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl"
+                >
+                    Sign up for The Breakfast Club
+                </Link>
+            </div>
         </GuestLayout>
     );
 }

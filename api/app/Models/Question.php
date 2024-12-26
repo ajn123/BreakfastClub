@@ -20,4 +20,10 @@ class Question extends Model
     {
         return $this->hasMany(QuestionAnswer::class);
     }
+
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
 }

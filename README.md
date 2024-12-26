@@ -37,15 +37,10 @@ The application should be hot reloaded when you make changes to the code.
 - [x] Get docker compose to work with vite.
 - [x] Get docker compose to work with mailhog.
 - [x] Get docker compose to work with nginx.
-- [ ] Get a local database working.
-- [ ] Build out questionnaire.
+- [x] Get a local database working.
+- [x] Build out questionnaire.
 
 
-## Testing
-Work in progress, still need to get this done.
-```
-sail artisan dusk
-```
 
 ## Application Ports
 
@@ -56,9 +51,10 @@ sail artisan dusk
 | Mailpit    | 1025  | Email Testing Web Interface               |
 
 
-
 ## Useful Commands
 ```
 sail artisan queue:work
 sail artisan pail
+sail artisan db:seed # you need this for the questionnaire to work
+sail artisan test
 ```
