@@ -20,6 +20,8 @@ return new class extends Migration
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->string('location');
+            $table->string('image')->nullable();
+            $table->string('website')->nullable();
 
             // Recurrence fields
             $table->string('recurrence_type')->nullable(); // daily, weekly, monthly, custom

@@ -30,6 +30,19 @@ export interface QuestionAnswer {
     answer: string;
     options: string[];
 }
+
+
+
+export interface Event {
+    title: string;
+    description: string;
+    start_time: string;
+    end_time: string;
+    location: string;
+    image: string;
+    website: string;
+}
+
 // PageProps is a generic type that defines the shape of props passed to pages in the application
 // T is a generic parameter that defaults to Record<string,unknown> (an object with string keys and unknown values)
 // The type extends T with additional required properties:

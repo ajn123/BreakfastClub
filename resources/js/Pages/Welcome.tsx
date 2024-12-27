@@ -1,7 +1,9 @@
+import EventItem from '@/Components/EventItem';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
+import { Event } from '../types';
 
-export default function Welcome() {
+export default function Welcome({ events }: { events: Event[] }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
             {/* Decorative breakfast icons background */}
@@ -14,7 +16,7 @@ export default function Welcome() {
                 />
             </div>
 
-            <div className="relative min-h-screen flex flex-col items-center justify-center px-4">
+            <div className="relative min-h-screen flex flex-col items-center justify-center px-4 my-16">
                 {/* Main Content */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -42,7 +44,7 @@ export default function Welcome() {
                         transition={{ delay: 0.3 }}
                         className="text-2xl md:text-3xl text-gray-700 mb-8 font-light"
                     >
-                        Start Your Day with Great
+                        Find something to do
                     </motion.p>
 
                     {/* Description */}
@@ -52,8 +54,7 @@ export default function Welcome() {
                         transition={{ delay: 0.5 }}
                         className="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto"
                     >
-                        Join DC's most vibrant morning community. We bring together professionals,
-                        creatives, and early risers for meaningful conversations over delicious breakfasts.
+                        Making friends and finding things to do in DC
                     </motion.p>
 
                     {/* CTA Buttons */}
@@ -75,6 +76,30 @@ export default function Welcome() {
                         >
                             Sign In
                         </Link>
+                    </motion.div>
+
+                    {/* Events Section */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8 }}
+                        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16"
+                    >
+                        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Upcoming Events</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {events.map((event: Event, index: number) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.8 + (index * 0.1) }}
+                                >
+                                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                                        <EventItem event={event} />
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
                     </motion.div>
 
                     {/* Quick Stats */}
