@@ -65,7 +65,6 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
     # Remove any existing mysql.lock file if it exists
     rm -f ~/.sail/data/mysql/mysql.sock.lock;
 
-
     docker compose -f docker-compose.prod.yml down
     # Remove the laravel-files volume
     docker volume rm laravel-files
@@ -75,8 +74,8 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
     docker compose -f docker-compose.prod.yml up -d;
 
     sleep 10;
-    docker-compose exec php-fpm php /var/www/laravel/current/artisan migrate
-    docker-compose exec php-fpm php /var/www/laravel/current/artisan db:seed
+    docker-compose exec php-fpm php /var/www/laravel/current/artisan migrate;
+    docker-compose exec php-fpm php /var/www/laravel/current/artisan db:seed;
 
 
 echo "Deployment complete!"
