@@ -55,22 +55,6 @@ export default function Questionnaire({ initialQuestions }: QuestionnaireProps) 
 
     const handleSubmit = () => {
         post(route('question-answers.store'), {
-            onSuccess: () => {
-                // Show success message and redirect to dashboard
-                router.visit(route('dashboard'), {
-                    preserveScroll: true,
-                    preserveState: true,
-                    // Only refresh these specific pieces of page data from the server
-                    // Other page data will be preserved from the current state
-                    only: ['upcomingEvents', 'recommendedConnections'],
-                    data: {
-                        toast: {
-                            message: 'Profile completed successfully!',
-                            type: 'success'
-                        }
-                    }
-                });
-            },
             onError: (errors) => {
                 console.error('Submission errors:', errors);
             }
