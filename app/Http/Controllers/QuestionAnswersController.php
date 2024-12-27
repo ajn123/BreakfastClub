@@ -40,6 +40,11 @@ class QuestionAnswersController extends Controller
             }
         });
 
-        return redirect()->back()->with('success', 'Answers saved successfully!');
+        return Inertia::render('Dashboard', [
+            'toast' => [
+                'message' => 'Answers saved successfully!',
+                'type' => 'success'
+            ]
+        ]);
     }
 }

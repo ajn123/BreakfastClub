@@ -3,13 +3,31 @@ import { Head } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { Link } from '@inertiajs/react';
 import { PageProps } from '@/types/index';
-
-export default function Dashboard({ auth, hasCompletedQuestions }: PageProps) {
+import { XMarkIcon } from '@heroicons/react/24/outline';
+export default function Dashboard({ auth, hasCompletedQuestions, toast }: PageProps) {
     return (
         <AuthenticatedLayout
         >
 
             <div className="py-12">
+
+                {toast && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.9 }}
+                        className="py-4 px-6 m-12 mx-auto max-w-5xl p-4 bg-green-100 text-green-800 border-l-4 border-green-500 rounded-lg shadow-lg toast"
+                    >
+                        <button onClick={() => { const toastElement = document.querySelector('.toast'); if (toastElement) { toastElement.classList.add('opacity-0'); setTimeout(() => { toastElement.classList.add('hidden'); }, 0); } }}>
+                            <div className="flex items-center space-x-2">
+                                <XMarkIcon className="w-6 h-6" />
+                                <p className="text-lg font-semibold">{toast.message}</p>
+                            </div>
+                        </button>
+                    </motion.div>
+                )}
+
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                     {/* Welcome Section */}
                     <motion.div
