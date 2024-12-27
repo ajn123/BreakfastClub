@@ -5,13 +5,11 @@ WORKDIR /app
 
 COPY . .
 
-
 # Install the PHP intl extention
 RUN docker-php-ext-install pcntl 
 
 RUN composer install 
 # Build stage for Node dependencies
-
 
 FROM node:18 as node
 WORKDIR /app
@@ -104,29 +102,16 @@ RUN docker-php-ext-install pdo_mysql
 # Install the PHP bcmath extension
 RUN docker-php-ext-install bcmath
 
-
 # Install the PHP gmp extention
 RUN docker-php-ext-install gmp
 
-#####################################
-# PHPRedis:
-#####################################
 RUN pecl install redis && docker-php-ext-enable redis
-
 
 # Install the xdebug extension
 RUN pecl install xdebug
 
-#####################################
-# PHP Memcached:
-#####################################
-
 # Install the php memcached extension
 RUN pecl install memcached && docker-php-ext-enable memcached
-
-#####################################
-# Composer:
-#####################################
 
 # Install composer and add its bin to the PATH.
 RUN curl -s http://getcomposer.org/installer | php && \
@@ -144,9 +129,6 @@ RUN chmod 0644 /etc/cron.d/laravel-scheduler
 
 ADD ./docker/php-fpm/laravel.ini /usr/local/etc/php/conf.d
 
-#####################################
-# Aliases:
-#####################################
 # docker-compose exec php-fpm dep --> locally installed Deployer binaries
 RUN echo '#!/bin/bash\n/usr/local/bin/php /var/www/vendor/bin/dep "$@"' > /usr/bin/dep
 RUN chmod +x /usr/bin/dep
@@ -171,13 +153,7 @@ RUN rm -r /var/lib/apt/lists/*
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www/laravel/current
-# These COPY commands will copy files from the 'node' build stage to:
-# 1. /var/www/laravel/current/public/build - Contains the compiled frontend assets
-# 2. /var/www/laravel/current/node_modules - Contains the Node.js dependencies
 
-# Build frontend assets
-
-# Copy built assets from node stage
 
 COPY . .
 
@@ -199,7 +175,6 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD test -d /var/www/laravel/current/node_modules || exit 1
-
 
 EXPOSE 9000
 CMD ["php-fpm"]
