@@ -72,7 +72,9 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
 
 
     # Start docker compose
-    docker compose -f docker-compose.prod.yml up -d
+    docker compose -f docker-compose.prod.yml up -d;
+
+    sleep 10;
     docker-compose exec php-fpm php /var/www/laravel/current/artisan migrate
     docker-compose exec php-fpm php /var/www/laravel/current/artisan db:seed
 
