@@ -34,6 +34,12 @@ export interface User {
     updated_at: string;
 }
 
+export interface QuestionAnswer {
+    question_id: number;
+    answer: string;
+    options: string[];
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -41,4 +47,8 @@ export type PageProps<
         user: User;
     };
     ziggy: Config & { location: string };
+    toast: {
+        message: string;
+        type: 'success' | 'error';
+    };
 };
