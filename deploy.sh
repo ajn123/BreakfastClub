@@ -59,7 +59,7 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
 
     chmod -R 777 .
 
-    docker compose -f docker-compose.prod.yml build
+    docker compose -f docker-compose.prod.yml build --no-cache
 
     # Start the Docker containers
     echo "Starting Docker containers..."
