@@ -68,8 +68,10 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
     rm -f ~/.sail/data/mysql/mysql.sock.lock;
 
 
+    docker compose -f docker-compose.prod.yml down
     # Remove the laravel-files volume
     docker volume rm laravel-files
+
 
     # Start docker compose
     docker compose -f docker-compose.prod.yml up -d
