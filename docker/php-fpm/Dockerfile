@@ -165,6 +165,8 @@ RUN groupadd -g 1000 laravel && \
     usermod -a -G laravel www-data && \
     chown -R www-data:laravel storage public && \
     chmod -R 775 storage public
+USER root
+RUN chmod -R 775 storage public
 
 WORKDIR /var/www
 
