@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\QuestionAnswersController;
+use App\Models\Event;
 
 Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
@@ -13,6 +14,7 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
+            'events' => Event::all(),
         ]);
     });
 });
@@ -20,6 +22,7 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
         'hasCompletedQuestions' => false,
+
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -34,4 +37,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/question-answers', [QuestionAnswersController::class, 'index'])->name('question-answers.index');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

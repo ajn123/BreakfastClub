@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             QuestionSeeder::class,
-            // ... other seeders
+            EventSeeder::class,
         ]);
     }
 }

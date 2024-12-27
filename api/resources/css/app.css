@@ -4,7 +4,7 @@
 
 
 body {
-    background-color: #b09595;
+    @apply bg-orange-50;
 }
 
 
