@@ -6,6 +6,8 @@ WORKDIR /app
 COPY . .
 
 
+# Install the PHP intl extention
+RUN docker-php-ext-install pcntl 
 
 RUN composer install 
 # Build stage for Node dependencies
@@ -24,33 +26,34 @@ RUN npm run build
 
 FROM php:8.2-fpm
 
-# Install system dependencies
+# Install system dependencies first
 RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libzip-dev \
+    libgmp-dev \
+    gettext \
     zip \
-    unzip
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Configure and install PHP extensions
+RUN docker-php-ext-configure zip && \
+    docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd \
+    soap \
+    zip \
+    intl \
+    gmp
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy application files
-COPY . .
-
-# Install dependencies
-RUN composer install --no-interaction --no-dev --optimize-autoloader
-
-# Set permissions
-RUN chown -R www-data:www-data /var/www/html/storage
 
 ENV COMPOSER_MEMORY_LIMIT='-1'
 
@@ -101,13 +104,9 @@ RUN docker-php-ext-install pdo_mysql
 # Install the PHP bcmath extension
 RUN docker-php-ext-install bcmath
 
-# Install the PHP intl extention
-RUN docker-php-ext-install intl
 
 # Install the PHP gmp extention
 RUN docker-php-ext-install gmp
-
-RUN docker-php-ext-install exif pcntl 
 
 #####################################
 # PHPRedis:
@@ -172,8 +171,6 @@ RUN rm -r /var/lib/apt/lists/*
 RUN usermod -u 1000 www-data
 
 WORKDIR /var/www/laravel/current
-
-
 # These COPY commands will copy files from the 'node' build stage to:
 # 1. /var/www/laravel/current/public/build - Contains the compiled frontend assets
 # 2. /var/www/laravel/current/node_modules - Contains the Node.js dependencies
@@ -185,7 +182,6 @@ WORKDIR /var/www/laravel/current
 COPY . .
 
 COPY --from=composer /app/vendor/ ./vendor/
-
 COPY --from=node /app/public/build/ ./public/build/
 COPY --from=node /app/node_modules/ ./node_modules/
 
