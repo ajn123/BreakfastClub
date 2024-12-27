@@ -37,13 +37,6 @@ ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
     else
         echo "Docker Compose is already installed"
     fi
-
-    # Navigate to the api folder
-    # Clone the Laravel Sail Nginx PHP-FPM repository
-    echo "Cloning Laravel Sail Nginx PHP-FPM repository..."
-
-    rm -rf BreakfastClub
-    git clone https://github.com/ajn123/BreakfastClub.git
 ENDSSH
 
 # Copy .env file to the remote droplet
@@ -52,6 +45,8 @@ scp "$PROJECT_DIR/.env" "$REMOTE_USER@$DROPLET_IP:$REMOTE_DIR/BreakfastClub/api/
 
 # SSH into the remote droplet and run commands
 ssh "$REMOTE_USER@$DROPLET_IP" << 'ENDSSH'
+
+
     echo "Building Docker containers..."
     cd BreakfastClub/api
 
