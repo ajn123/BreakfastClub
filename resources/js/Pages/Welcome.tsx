@@ -119,9 +119,6 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                                     }
                                 }}
                             />
-
-
-
                         </div>
 
 

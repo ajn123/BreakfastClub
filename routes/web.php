@@ -1,13 +1,13 @@
 <?php
 
 use Inertia\Inertia;
+use App\Models\Event;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EventsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\QuestionAnswersController;
-use App\Http\Controllers\EventsController;
-use App\Models\Event;
 
 Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
@@ -41,5 +41,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/events', [EventsController::class, 'index'])->name('events.index');
 
 Route::get('/events/search', [EventsController::class, 'search'])->name('events.search');
+Route::post('/events', [EventsController::class, 'store'])->name('events.store');
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
