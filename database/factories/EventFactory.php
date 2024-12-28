@@ -19,8 +19,8 @@ class EventFactory extends Factory
         return [
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
-            'start_time' => fake()->dateTime(),
-            'end_time' => fake()->dateTime(),
+            'start_time' => $startTime = fake()->dateTime(),
+            'end_time' => fake()->dateTimeBetween($startTime),
             'location' => fake()->address(),
             'image' => fake()->imageUrl(),
             'website' => fake()->url(),
