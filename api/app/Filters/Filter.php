@@ -2,11 +2,9 @@
 
 namespace App\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 abstract class Filter
 {
-
-    public abstract function filter(Request $request);
+    abstract public function filter(Request $request);
 }

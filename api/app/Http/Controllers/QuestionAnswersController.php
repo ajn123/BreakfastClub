@@ -43,8 +43,8 @@ class QuestionAnswersController extends Controller
         return Inertia::render('Dashboard', [
             'toast' => [
                 'message' => 'Answers saved successfully!',
-                'type' => 'success'
-            ]
+                'type' => 'success',
+            ],
         ]);
     }
 }

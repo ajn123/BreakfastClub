@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: database-migration
+spec:
+  template:
+    spec:
+      containers:
+      - name: migration
+        image: registry.digitalocean.com/api-registry-unified/api-php-fpm:latest
+        command: ['php', '/var/www/laravel/current/artisan', 'migrate', '--force']
+        env:
+        - name: DB_HOST
+          value: "mysql"
+        - name: DB_DATABASE
+          value: "myapp"
+        - name: DB_USERNAME
+          value: "root"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: root-password
+      restartPolicy: Never
+  backoffLimit: 4 

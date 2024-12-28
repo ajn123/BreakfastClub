@@ -78,6 +78,12 @@ services:
     build:
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=api
+      - DB_USERNAME=sail
+      - DB_PASSWORD=password
     volumes:
       - laravel-files:/var/www/laravel/current
     networks:

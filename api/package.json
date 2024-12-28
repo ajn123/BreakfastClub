@@ -3,7 +3,7 @@
     "type": "module",
     "scripts": {
         "build": "tsc && vite build && vite build --ssr",
-        "dev": "vite --host",
+        "dev": "vite",
         "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix"
     },
     "devDependencies": {
