@@ -2,15 +2,13 @@
 
 namespace App\Filters;
 
-use Laravel\Scout\Builder;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
-class EventFilter extends Filter
+class EventFilter
 {
     public function filter(Request $request)
     {
-        $builder = Event::query();
         $query = $request->input('search');
 
         if (!$query) {
