@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\QuestionAnswersController;
+use App\Http\Controllers\EventsController;
 use App\Models\Event;
 
 Route::middleware(RedirectIfAuthenticated::class)->group(function () {
@@ -14,7 +15,7 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'events' => Event::all(),
+            'AllEvents' => Event::all(),
         ]);
     });
 });
@@ -36,5 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/question-answers', [QuestionAnswersController::class, 'store'])->name('question-answers.store');
     Route::get('/question-answers', [QuestionAnswersController::class, 'index'])->name('question-answers.index');
 });
+
+Route::get('/events', [EventsController::class, 'index'])->name('events.index');
+
+Route::get('/events/search', [EventsController::class, 'search'])->name('events.search');
 
 require __DIR__ . '/auth.php';

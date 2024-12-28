@@ -57,4 +57,5 @@ sail artisan queue:work
 sail artisan pail
 sail artisan db:seed # you need this for the questionnaire to work
 sail artisan test
+sail artisan queue:work redis --queue=scout
 ```
