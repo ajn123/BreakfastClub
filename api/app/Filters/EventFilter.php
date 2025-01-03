@@ -11,14 +11,13 @@ class EventFilter
     {
         $query = $request->input('search');
 
-        if (!$query) {
+        if (! $query) {
             return Event::all();
         }
 
-        $results = Event::where('title', 'like', '%' . $query . '%')
-            ->orWhere('description', 'like', '%' . $query . '%')
+        $results = Event::where('title', 'like', '%'.$query.'%')
+            ->orWhere('description', 'like', '%'.$query.'%')
             ->get();
-
 
         return $results;
     }

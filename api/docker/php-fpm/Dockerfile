@@ -15,7 +15,7 @@ FROM node:18 as node
 WORKDIR /app
 COPY . .
 COPY --from=composer /app/vendor/ ./vendor/
-RUN npm install
+RUN npm install --only=production
 RUN npm run build
 
 # Copy from build stages to final image

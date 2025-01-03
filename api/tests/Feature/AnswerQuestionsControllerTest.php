@@ -29,13 +29,12 @@ test('can store question answers', function () {
             ],
         ]);
 
-
     // Verify answers were stored in database
     foreach ($questions as $index => $question) {
         $this->assertDatabaseHas('question_answers', [
             'user_id' => $user->id,
             'question_id' => $question->id,
-            'answer' => 'Test answer ' . ($index + 1),
+            'answer' => 'Test answer '.($index + 1),
         ]);
     }
 });
@@ -49,7 +48,7 @@ test('can view questionnaire index page', function () {
         ->get(route('question-answers.index'));
 
     $response->assertInertia(
-        fn($page) => $page
+        fn ($page) => $page
             ->component('Questionnaire/Index')
             ->has('initialQuestions', 3)
     );
