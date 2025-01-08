@@ -118,3 +118,40 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/breakfast-club-nginx:latest
           file: ./api/docker/nginx/Dockerfile
+
+  cleanup:
+    needs: build
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clean up old images
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: breakfast-club
+        run: |
+          # Get package ID for the container
+          PACKAGE_ID=$(curl -s \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/user/packages/container/${REPO_NAME}/versions" \
+            | jq '.[1:] | .[].id')
+
+          # Delete all versions except the latest
+          for VERSION_ID in $PACKAGE_ID
+          do
+            echo "Deleting version ID: $VERSION_ID"
+            curl -s -X DELETE \
+              -H "Accept: application/vnd.github.v3+json" \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/user/packages/container/${REPO_NAME}/versions/${VERSION_ID}"
+          done
+          
+          echo "Cleanup completed!"
