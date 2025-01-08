@@ -34,6 +34,10 @@ services:
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: '${DB_DATABASE}'
+      DB_HOST: mysql
+      DB_DATABASE: api
+      DB_USERNAME: sail
+      DB_PASSWORD: password
       MYSQL_USER: '${DB_USERNAME}'
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
