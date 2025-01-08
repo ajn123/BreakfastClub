@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: migration
-        image: registry.digitalocean.com/api-registry-unified/api-php-fpm:latest
+        image: ghcr.io/ajn123/breakfast-club-php-fpm:latest
         command: ['php', '/var/www/laravel/current/artisan', 'migrate', '--force']
         env:
         - name: DB_HOST

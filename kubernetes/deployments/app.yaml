@@ -36,6 +36,9 @@ spec:
         volumeMounts:
         - name: laravel-storage
           mountPath: /var/www/laravel/current
+        envFrom:
+        - configMapRef:
+            name: laravel-config
         env:
         - name: DB_HOST
           value: "mysql"
