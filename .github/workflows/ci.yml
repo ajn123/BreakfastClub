@@ -137,15 +137,15 @@ jobs:
           REPO_OWNER: ${{ github.repository_owner }}
           REPO_NAME: breakfast-club
         run: |
-          # Get package ID for the container
-          PACKAGE_ID=$(curl -s \
+          # Get all versions except latest
+          VERSIONS=$(curl -s \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             "https://api.github.com/user/packages/container/${REPO_NAME}/versions" \
-            | jq '.[1:] | .[].id')
+            | jq -r '.[] | select(.metadata.container.tags[] != "latest") | .id')
 
-          # Delete all versions except the latest
-          for VERSION_ID in $PACKAGE_ID
+          # Delete old versions
+          for VERSION_ID in $VERSIONS
           do
             echo "Deleting version ID: $VERSION_ID"
             curl -s -X DELETE \
