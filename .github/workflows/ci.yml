@@ -124,7 +124,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          dockerfile: ./api/docker/php-fpm/Dockerfile
+          file: ./api/docker/php-fpm/Dockerfile
           platforms: linux/amd64
           push: true
           tags: breakfast-club-php-fpm:latest
@@ -136,4 +136,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: breakfast-club-nginx:latest
-          dockerfile: ./api/docker/nginx/Dockerfile
+          file: ./api/docker/nginx/Dockerfile
