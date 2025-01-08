@@ -23,9 +23,7 @@ RUN touch /var/log/messages
 # Copy 'logrotate' config file
 COPY logrotate/nginx /etc/logrotate.d/
 
-
 COPY sites/laravel.conf /etc/nginx/sites-available/
-COPY ssl/default.crt /etc/nginx/ssl/
 
 # Set upstream conf and remove the default conf
 RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf \
