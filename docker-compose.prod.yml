@@ -67,10 +67,8 @@ services:
     depends_on:
       - php-fpm
     volumes:
-      - ${NGINX_SSL_PATH}:/etc/nginx/ssl
       - laravel-files:/var/www/laravel/current
       - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
-      - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
     ports:
       #            port mappings, host to docker
       - "${NGINX_HOST_HTTPS_PORT}:443"
