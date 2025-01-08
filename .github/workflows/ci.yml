@@ -139,7 +139,7 @@ jobs:
       - name: Build Nginx image
         uses: docker/build-push-action@v5
         with:
-          context: ./api
+          context: ./api/docker/nginx
           platforms: linux/amd64
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/breakfast-club-nginx:latest
