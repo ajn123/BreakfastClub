@@ -123,8 +123,17 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./api
-          platforms: linux/amd64    # Explicitly specify platform
+          context: .
+          dockerfile: ./api/docker/php-fpm/Dockerfile
+          platforms: linux/amd64
           push: true
           tags: breakfast-club-php-fpm:latest
-          dockerfile: ./api/docker/php-fpm/Dockerfile
+
+      - name: Build Nginx image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./api
+          platforms: linux/amd64
+          push: true
+          tags: breakfast-club-nginx:latest
+          dockerfile: ./api/docker/nginx/Dockerfile
