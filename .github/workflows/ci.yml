@@ -74,42 +74,6 @@ jobs:
           php artisan test
 
   
-  publish-docker-image:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
-        with:
-          php-version: '8.2'
-      - name: Install Dependencies
-        run: |
-          curl -sS https://getcomposer.org/installer | php -- --version=2.7.6
-          sudo mv composer.phar /usr/local/bin/composer
-          cd api
-          composer install --no-interaction --prefer-dist
-      - name: Install sail
-        run: |
-          cd api
-          cp .env.example .env
-          composer require laravel/sail --dev
-          php artisan sail:install --with=pgsql,redis,mailpit
-      - name: Build sail image
-        run: |
-          cd api
-          docker buildx build --platform linux/amd64 -f docker/php-fpm/Dockerfile -t breakfast-club-php-fpm .
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push Docker image to GitHub Container Registry
-        run: |
-          cd api
-          docker tag api-nginx:latest ghcr.io/ajn123/breakfastclub/breakfast-club:latest
-          docker push ghcr.io/ajn123/breakfastclub/breakfast-club:latest
 
   build:
     runs-on: ubuntu-latest
