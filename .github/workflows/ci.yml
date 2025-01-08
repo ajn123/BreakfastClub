@@ -100,6 +100,13 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/breakfast-club-php-fpm:latest
 
+
+      - name: Generate SSL Keys
+        run: |
+          cd api/docker/nginx/ssl
+          chmod +x generate-keys.sh
+          ./generate-keys.sh
+
       - name: Build Nginx image
         uses: docker/build-push-action@v5
         with:
