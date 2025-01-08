@@ -6,7 +6,6 @@ spec:
   selector:
     matchLabels:
       app: redis
-  replicas: 1
   template:
     metadata:
       labels:
@@ -14,12 +13,15 @@ spec:
     spec:
       containers:
       - name: redis
-        image: redis:6.2-alpine
+        image: redis:alpine
+        volumeMounts:
+        - name: redis-storage
+          mountPath: /data
         ports:
         - containerPort: 6379
-        resources:
-          limits:
-            memory: 512Mi
-          requests:
-            memory: 256Mi
         command: ["redis-server"]
+        args: ["--appendonly yes"]
+      volumes:
+      - name: redis-storage
+        persistentVolumeClaim:
+          claimName: redis-pvc
