@@ -105,6 +105,9 @@ jobs:
         with:
           context: ./api/docker/nginx
           platforms: linux/amd64
+          build-args: |
+            PHP_UPSTREAM_CONTAINER=localhost
+            PHP_UPSTREAM_PORT=9000
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/breakfast-club-nginx:latest
           file: ./api/docker/nginx/Dockerfile
