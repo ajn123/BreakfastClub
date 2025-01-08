@@ -51,6 +51,10 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: root-password
+        - name: SESSION_DOMAIN
+          value: ".yourdomain.com"
+        - name: SANCTUM_STATEFUL_DOMAINS
+          value: "yourdomain.com"
       volumes:
       - name: laravel-storage
         emptyDir: {}
