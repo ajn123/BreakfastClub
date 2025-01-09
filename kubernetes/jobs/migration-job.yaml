@@ -1,25 +1,39 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: database-migration
+  name: laravel-migration
+  namespace: prod
 spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 4
   template:
+    metadata:
+      labels:
+        app: laravel-migration
+        namespace: prod
     spec:
-      containers:
-      - name: migration
-        image: ghcr.io/ajn123/breakfast-club-php-fpm:latest
-        command: ['php', '/var/www/laravel/current/artisan', 'migrate', '--force']
-        env:
-        - name: DB_HOST
-          value: "mysql"
-        - name: DB_DATABASE
-          value: "myapp"
-        - name: DB_USERNAME
-          value: "root"
-        - name: DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: root-password
       restartPolicy: Never
-  backoffLimit: 4 
+      containers:
+      - name: php-fpm
+        image: ghcr.io/ajn123/breakfast-club-php-fpm:latest
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            cd /var/www/laravel/current && \
+            php artisan migrate --force && \
+            php artisan db:seed --force
+        envFrom:
+        - configMapRef:
+            name: laravel-config
+        env:
+          - name: DB_HOST
+            value: "mysql"
+          - name: DB_DATABASE
+            value: "myapp"
+          - name: DB_USERNAME
+            value: "root"
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-secret
+                key: root-password

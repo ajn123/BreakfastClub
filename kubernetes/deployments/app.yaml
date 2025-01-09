@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: php-app
+  namespace: prod
 spec:
   selector:
     matchLabels:
@@ -51,10 +52,6 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: root-password
-        - name: SESSION_DOMAIN
-          value: ".yourdomain.com"
-        - name: SANCTUM_STATEFUL_DOMAINS
-          value: "yourdomain.com"
       volumes:
       - name: laravel-storage
         emptyDir: {}
