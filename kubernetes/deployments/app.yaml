@@ -15,10 +15,8 @@ spec:
       initContainers:
       - name: copy-app
         image: ghcr.io/ajn123/breakfast-club-php-fpm:latest
-        command: ['/bin/sh', '-c', 'cp -r /var/www/laravel/current/. /shared/ && chmod -R 777 /shared']
-        volumeMounts:
-        - name: laravel-storage
-          mountPath: /shared
+        imagePullPolicy: Always
+        command: ['/bin/sh', '-c', 'cp -r /var/www/laravel/current/. /shared/ && chmod -R 777 /var/www/laravel/current/']
 
       containers:
       - name: nginx
