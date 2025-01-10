@@ -1,5 +1,6 @@
 import QuestionHeader from "./QuestionHeader";
-import Question from "./Question";
+import QuestionInterface from "./QuestionInterface";
+import { Question } from "../../types";
 
 
 export default function QuestionAnswerForm({ questions, currentQuestionIndex, data, setData, handleBack, handleNext, processing }: { questions: Question[], currentQuestionIndex: number, data: any, setData: any, handleBack: any, handleNext: any, processing: boolean }) {
@@ -8,7 +9,7 @@ export default function QuestionAnswerForm({ questions, currentQuestionIndex, da
             <QuestionHeader question={questions[currentQuestionIndex]} />
 
             <div className="mb-8">
-                <Question question={questions[currentQuestionIndex]} data={data} setData={setData} />
+                <QuestionInterface question={questions[currentQuestionIndex]} data={data} setData={setData} />
             </div>
 
             <div className="flex justify-between">

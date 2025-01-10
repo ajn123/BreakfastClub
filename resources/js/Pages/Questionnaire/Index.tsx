@@ -1,9 +1,7 @@
 import { Head, useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { router } from '@inertiajs/react';
-import Question from './Question';
-import QuestionHeader from './QuestionHeader';
+import { Question } from '../../types';
 import QuestionAnswerForm from './QuestionAnswerForm';
 import { QuestionAnswer } from '../../types';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -20,14 +18,6 @@ interface QuestionnaireProps {
     initialQuestions: Question[];
 }
 
-interface Question {
-    id: number;
-    type: string;
-    title: string;
-    subtitle: string;
-    labels: string[];
-    options: string[];
-}
 
 export default function Questionnaire({ initialQuestions }: QuestionnaireProps) {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -66,7 +56,6 @@ export default function Questionnaire({ initialQuestions }: QuestionnaireProps) 
 
     return (
         <AuthenticatedLayout>
-
             <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
                 <Head title="Questionnaire - The Breakfast Club" />
                 < div className="max-w-4xl mx-auto px-4 py-12">
