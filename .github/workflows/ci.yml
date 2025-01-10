@@ -91,7 +91,7 @@ jobs:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
         
     - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save do-nyc3-my-cluster
+      run: doctl kubernetes cluster kubeconfig save my-cluster
         
     - name: Deploy to cluster
       run: |
