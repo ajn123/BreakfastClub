@@ -1,5 +1,5 @@
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscalar
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
 metadata:
   name: php-app-hpa
   namespace: prod
@@ -8,6 +8,12 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: php-app
-  minReplicas: 1
+  minReplicas: 2
   maxReplicas: 10
-  targetCPUUtilizationPercentage: 80
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
