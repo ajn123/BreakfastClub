@@ -1,83 +1,11 @@
-name: Laravel CI
-
-permissions:
-  packages: write  # Allow writing to packages
-  contents: read   # Allow reading repository contents
-
+name: Deploy to Kubernetes
 on:
   push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
-
+    branches: [ main ]
 jobs:
-  laravel-tests:
-    runs-on: ubuntu-latest
-    
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: api
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: mbstring, dom, fileinfo, mysql, redis
-          coverage: none
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          
-      - name: Copy .env
-        run: |
-          cd api
-          cp .env.example .env
-          
-      - name: Install Dependencies
-        run: |
-          cd api
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm install
-          
-      - name: Generate key
-        run: |
-          cd api
-          php artisan key:generate
-          
-      - name: Directory Permissions
-        run: |
-          cd api
-          chmod -R 777 storage bootstrap/cache
-          
-      - name: Run Tests
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: api
-          DB_USERNAME: root
-          DB_PASSWORD: password
-        run: |
-          cd api
-          npm run build
-          php artisan test
-
   
-
   build:
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-latest    
     steps:
       - uses: actions/checkout@v4
       
@@ -100,7 +28,6 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/breakfast-club-php-fpm:latest
 
-
       - name: Generate SSL Keys
         run: |
           cd api/docker/nginx/ssl
@@ -118,6 +45,22 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/breakfast-club-nginx:latest
           file: ./api/docker/nginx/Dockerfile
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Configure kubectl
+      uses: azure/k8s-set-context@v1
+      with:
+        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+        
+    - name: Deploy to cluster
+      run: |
+        kubectl apply -f k8s/
+
 
   # cleanup:
   #   needs: build
@@ -155,3 +98,6 @@ jobs:
   #         done
           
   #         echo "Cleanup completed!"
+
+
+  
