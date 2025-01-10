@@ -12,6 +12,7 @@ spec:
       labels:
         app: php-app
     spec:
+      replicas: 1
       initContainers:
       - name: copy-app
         image: ghcr.io/ajn123/breakfast-club-php-fpm:latest
