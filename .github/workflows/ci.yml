@@ -4,6 +4,38 @@ on:
     branches: [ main ]
 jobs:
 
+  prune-images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prune old images
+        uses: vlaurin/action-ghcr-prune@v0.5.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          organization: ${{ github.repository_owner }}
+          container: breakfast-club-php-fpm
+          dry-run: false
+          keep-last: 1
+          keep-younger-than: 24h
+          prune-untagged: true
+
+      - name: Prune old Nginx images
+        uses: vlaurin/action-ghcr-prune@v0.5.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          organization: ${{ github.repository_owner }}
+          container: breakfast-club-nginx
+          dry-run: false
+          keep-last: 1
+          keep-younger-than: 24h
+          prune-untagged: true
+
   build:
     runs-on: ubuntu-latest    
     steps:
