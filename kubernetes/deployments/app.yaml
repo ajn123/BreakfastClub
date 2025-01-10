@@ -4,6 +4,7 @@ metadata:
   name: php-app
   namespace: prod
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: php-app
@@ -12,7 +13,6 @@ spec:
       labels:
         app: php-app
     spec:
-      replicas: 1
       initContainers:
       - name: copy-app
         image: ghcr.io/ajn123/breakfast-club-php-fpm:latest
