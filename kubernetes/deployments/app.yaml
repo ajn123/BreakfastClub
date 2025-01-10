@@ -16,7 +16,10 @@ spec:
       - name: copy-app
         image: ghcr.io/ajn123/breakfast-club-php-fpm:latest
         imagePullPolicy: Always
-        command: ['/bin/sh', '-c', 'cp -r /var/www/laravel/current/. /shared/ && chmod -R 777 /var/www/laravel/current/']
+        command: ['/bin/sh', '-c', 'cp -r /var/www/laravel/current/. /shared/ && chmod -R 777 /shared/']
+        volumeMounts:
+        - name: laravel-storage
+          mountPath: /shared
 
       containers:
       - name: nginx
