@@ -2,7 +2,7 @@
 
 import { QuestionAnswer } from '../../types';
 
-export default function Question({ question, data, setData }: { question: any, data: any, setData: any }) {
+export default function QuestionInterface({ question, data, setData }: { question: any, data: any, setData: any }) {
 
     switch (question.type) {
         case 'select':

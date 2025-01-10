@@ -31,6 +31,14 @@ export interface QuestionAnswer {
     options: string[];
 }
 
+export interface Question {
+    id: number;
+    type: string;
+    title: string;
+    subtitle: string;
+    labels: string[];
+    options: string[];
+}
 
 
 export interface Event {
