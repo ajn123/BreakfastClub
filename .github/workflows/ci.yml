@@ -60,7 +60,7 @@ jobs:
         
     - name: Deploy to cluster
       run: |
-        kubectl apply -f k8s/
+        kubectl apply -f kubernetes/ -R    
 
 
   # cleanup:
