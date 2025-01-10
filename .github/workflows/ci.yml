@@ -83,12 +83,15 @@ jobs:
     if: success()
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
-    - name: Configure kubectl
-      uses: azure/k8s-set-context@v1
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
       with:
-        kubeconfig: ${{ secrets.KUBE_CONFIG }}
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save do-nyc3-my-cluster
         
     - name: Deploy to cluster
       run: |
