@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { router } from '@inertiajs/react';
 import Question from './Question';
+import QuestionHeader from './QuestionHeader';
+import QuestionAnswerForm from './QuestionAnswerForm';
 import { QuestionAnswer } from '../../types';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 interface QuestionnaireProps {
     initialQuestions: Question[];
@@ -62,101 +65,92 @@ export default function Questionnaire({ initialQuestions }: QuestionnaireProps) 
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
-            <Head title="Questionnaire - The Breakfast Club" />
+        <AuthenticatedLayout>
 
-            <div className="max-w-4xl mx-auto px-4 py-12">
-                {/* Question counter */}
-                <motion.div
-                    className="text-center mb-6 text-2xl font-bold text-orange-500"
-                    key={currentQuestionIndex}
-                    initial={{ x: 20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: -20, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                >
-                    Question {currentQuestionIndex + 1} of {questions.length}
-                </motion.div>
-
-                {/* Question navigation circles */}
-                <div className="flex justify-center gap-2 mb-8">
-                    {questions.map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setCurrentQuestionIndex(index)}
-                            className={`w-[30px] h-[30px] rounded-full transition-colors flex items-center justify-center text-sm font-medium ${index === currentQuestionIndex
-                                ? 'bg-orange-500 text-white'
-                                : 'bg-orange-200 hover:bg-orange-300 text-gray-700'
-                                }`}
-                            aria-label={`Go to question ${index + 1}`}
+            <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
+                <Head title="Questionnaire - The Breakfast Club" />
+                < div className="max-w-4xl mx-auto px-4 py-12">
+                    {questions.length > 0 &&
+                        <motion.div
+                            className="text-center mb-6 text-2xl font-bold text-orange-500"
+                            key={currentQuestionIndex}
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -20, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
                         >
-                            {index + 1}
-                        </button>
-                    ))}
-                </div>
+                            Question {currentQuestionIndex + 1} of {questions.length}
+                        </motion.div>
+                    }
 
-                {Object.keys(submissionErrors).length > 0 && (
-                    <div className="mb-8 bg-red-50 border-2 border-red-200 rounded-lg p-4">
-                        <h3 className="text-red-700 font-semibold mb-2">Please correct the following errors:</h3>
-                        <ul className="list-disc list-inside text-red-600">
-                            Fill out all questions to complete your profile.
-                        </ul>
+                    {/* Question navigation circles */}
+                    <div className="flex justify-center gap-2 mb-8">
+
+                        {questions.length > 0 && questions.map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setCurrentQuestionIndex(index)}
+                                className={`w-[30px] h-[30px] rounded-full transition-colors flex items-center justify-center text-sm font-medium ${index === currentQuestionIndex
+                                    ? 'bg-orange-500 text-white'
+                                    : 'bg-orange-200 hover:bg-orange-300 text-gray-700'
+                                    }`}
+                                aria-label={`Go to question ${index + 1}`}
+                            >
+                                {index + 1}
+                            </button>
+                        ))}
                     </div>
-                )}
 
-                {/* Progress bar */}
-                <motion.div
-                    className="h-1 bg-orange-200 rounded-full mb-12"
-                    initial={{ width: '0%' }}
-                >
-                    <motion.div
-                        className="h-1 bg-orange-500 rounded-full"
-                        animate={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
-                    />
-                </motion.div>
+                    {Object.keys(submissionErrors).length > 0 && (
+                        <div className="mb-8 bg-red-50 border-2 border-red-200 rounded-lg p-4">
+                            <h3 className="text-red-700 font-semibold mb-2">Please correct the following errors:</h3>
+                            <ul className="list-disc list-inside text-red-600">
+                                Fill out all questions to complete your profile.
+                            </ul>
+                        </div>
+                    )}
 
-                <AnimatePresence mode="wait">
+                    {/* Progress bar */}
                     <motion.div
-                        key={currentQuestionIndex}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -20 }}
-                        transition={{ duration: 0.3 }}
-                        className="bg-white rounded-2xl shadow-xl p-8"
+                        className="h-1 bg-orange-200 rounded-full mb-12"
+                        initial={{ width: '0%' }}
                     >
-                        <div className="mb-8 text-center">
-                            <h2 className="text-3xl font-bold text-gray-900 mb-2">
-                                {questions[currentQuestionIndex].title}
-                            </h2>
-                            <p className="text-gray-600">
-                                {questions[currentQuestionIndex].subtitle}
-                            </p>
-                        </div>
-
-                        <div className="mb-8">
-                            <Question question={questions[currentQuestionIndex]} data={data} setData={setData} />
-                        </div>
-
-                        <div className="flex justify-between">
-                            <button
-                                onClick={handleBack}
-                                disabled={currentQuestionIndex === 0}
-                                className="px-6 py-3 text-orange-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                Back
-                            </button>
-
-                            <button
-                                onClick={handleNext}
-                                disabled={processing}
-                                className="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {currentQuestionIndex === questions.length - 1 ? 'Complete' : 'Next'}
-                            </button>
-                        </div>
+                        <motion.div
+                            className="h-1 bg-orange-500 rounded-full"
+                            animate={{ width: `${((currentQuestionIndex + 1) / questions.length) * 100}%` }}
+                        />
                     </motion.div>
-                </AnimatePresence>
+
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={currentQuestionIndex}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ duration: 0.3 }}
+                            className="bg-white rounded-2xl shadow-xl p-8"
+                        >
+                            {questions.length > 0 && <QuestionAnswerForm
+                                questions={questions}
+                                currentQuestionIndex={currentQuestionIndex}
+                                data={data}
+                                setData={setData}
+                                handleBack={handleBack}
+                                handleNext={handleNext}
+                                processing={processing}
+                            />
+                            }
+                            {questions.length == 0 && (
+                                <div className="mb-8 text-center">
+                                    <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                                        No questions found
+                                    </h2>
+                                </div>
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
+                </div>
             </div>
-        </div>
+        </AuthenticatedLayout >
     );
 }
