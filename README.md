@@ -59,3 +59,8 @@ sail artisan db:seed # you need this for the questionnaire to work
 sail artisan test
 sail artisan queue:work redis --queue=scout
 ```
+
+
+
+# Thanks
+- Use https://github.com/vlaurin/action-ghcr-prune/tree/v0.5.0/ to prune old images from github container registry.
