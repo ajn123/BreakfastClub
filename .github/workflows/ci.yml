@@ -19,9 +19,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           container: breakfast-club-php-fpm
-          dry-run: true
-          keep-last: 2
-          keep-younger-than: 24h
+          dry-run: false
+          keep-last: 3
           prune-untagged: true
 
       
@@ -31,9 +30,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           container: breakfast-club-nginx
-          dry-run: true
-          keep-last: 2
-          keep-younger-than: 24h
+          dry-run: false
+          keep-last: 3
           prune-untagged: true
 
   build:
