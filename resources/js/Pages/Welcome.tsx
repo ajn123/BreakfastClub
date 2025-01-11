@@ -1,8 +1,10 @@
 import EventItem from '@/Components/EventItem';
+import EventSwiper from '@/Components/EventSwiper';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { Event } from '../types';
 import axios from 'axios';
+
 import { useState, useEffect } from 'react';
 
 export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
@@ -41,7 +43,7 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.2 }}
                     className="text-center max-w-4xl mx-auto"
                 >
                     {/* Logo/Title */}
@@ -98,6 +100,8 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                         </Link>
                     </motion.div>
 
+                    <EventSwiper />
+
                     {/* Events Section */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -122,7 +126,8 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                         </div>
 
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {events && events.map((event: Event, index: number) => (
                                 <motion.div
                                     key={index}
@@ -135,11 +140,11 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                                     </div>
                                 </motion.div>
                             ))}
-                        </div>
+                        </div> */}
                     </motion.div>
 
                     {/* Quick Stats */}
-                    <motion.div
+                    {/* <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.9 }}
@@ -157,7 +162,7 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                             <div className="text-3xl font-bold text-orange-500 mb-2">1000+</div>
                             <div className="text-gray-600">Connections Made</div>
                         </div>
-                    </motion.div>
+                    </motion.div> */}
                 </motion.div>
 
                 {/* Footer */}

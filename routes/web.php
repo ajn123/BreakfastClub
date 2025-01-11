@@ -38,9 +38,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/question-answers', [QuestionAnswersController::class, 'index'])->name('question-answers.index');
 });
 
-Route::get('/events', [EventsController::class, 'index'])->name('events.index');
+Route::prefix('api')->group(function () {
+    Route::get('/events', [EventsController::class, 'index'])->name('events.index');
 
-Route::get('/events/search', [EventsController::class, 'search'])->name('events.search');
-Route::post('/events', [EventsController::class, 'store'])->name('events.store');
+    Route::get('/events/search', [EventsController::class, 'search'])->name('events.search');
+    Route::post('/events', [EventsController::class, 'store'])->name('events.store');
+
+    Route::post('/liked-events', [EventsController::class, 'likedEvents'])->name('liked-events.store');
+    Route::get('/liked-events', [EventsController::class, 'likedEvents'])->name('liked-events.index');
+});
 
 require __DIR__.'/auth.php';

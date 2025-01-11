@@ -18,11 +18,11 @@ class EventFactory extends Factory
     {
         return [
             'title' => fake()->sentence(),
-            'description' => fake()->paragraph(),
+            'description' => 'Description number '.fake()->numberBetween(1, 1000),
             'start_time' => $startTime = fake()->dateTime(),
             'end_time' => fake()->dateTimeBetween($startTime),
             'location' => fake()->address(),
-            'image' => fake()->imageUrl(),
+            'image' => 'https://picsum.photos/seed/'.$this->faker->numberBetween(1, 1000).'/800/600',
             'website' => fake()->url(),
         ];
     }
