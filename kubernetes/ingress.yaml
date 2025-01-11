@@ -1,28 +1,24 @@
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: ingress-lb
-#   namespace: prod
-#   annotations:
-#     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-#     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-# spec:
-#   ingressClassName: nginx
-#   rules:
-#   - host: touchgrassdc.com  # Replace with your domain
-#     http:
-#       paths:
-#       - path: /
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: php-app
-#             port:
-#               number: 80 
-#       - path: /
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: php-app
-#             port:
-#               number: 443
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: prod
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - touchgrassdc.com
+    secretName: touchgrassdc-tls
+  rules:
+  - host: touchgrassdc.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: php-app
+            port:
+              number: 80
