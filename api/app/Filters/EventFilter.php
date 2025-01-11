@@ -3,22 +3,28 @@
 namespace App\Filters;
 
 use App\Models\Event;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
-class EventFilter
+class EventFilter extends Filter
 {
-    public function filter(Request $request)
+    public function __construct()
     {
-        $query = $request->input('search');
+        parent::__construct(new Event);
+    }
 
-        if (! $query) {
-            return Event::all();
-        }
+    public function search(Builder $query, $value)
+    {
+        return $query->where('title', 'like', '%'.$value.'%')
+            ->orWhere('description', 'like', '%'.$value.'%');
+    }
 
-        $results = Event::where('title', 'like', '%'.$query.'%')
-            ->orWhere('description', 'like', '%'.$query.'%')
-            ->get();
+    public function limit(Builder $query, $value)
+    {
+        return $query->limit($value);
+    }
 
-        return $results;
+    public function page(Builder $query, $value)
+    {
+        return $query->offset($value * 5);
     }
 }
