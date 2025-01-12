@@ -25,3 +25,14 @@ spec:
             name: php-app
             port:
               number: 80
+
+  - host: analytics.touchgrassdc.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: monitoring-grafana
+            port:
+              number: 80

@@ -20,7 +20,6 @@ export default function EventSwiper() {
     // Load more events when we're running low
     useEffect(() => {
         if (events.length - currentIndex <= 2 && !loading) {
-            console.log('Loading more events');
             loadMoreEvents();
         }
     }, [currentIndex, events.length, loading]);
@@ -30,10 +29,8 @@ export default function EventSwiper() {
         setLoading(true);
 
         try {
-            console.log(`/api/events?limit=5&page=${page}`);
             const response = await axios.get(`/api/events?limit=5&page=${page}`);
             setPage(page + 1);
-            console.log(response.data);
             const newEvents = response.data;
             setEvents(prev => [...prev, ...newEvents]);
         } catch (error) {
