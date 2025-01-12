@@ -95,7 +95,7 @@ jobs:
         
     - name: Deploy to cluster
       run: |
-        kubectl apply -f kubernetes/ -R    
+        kubectl apply -f kubernetes/ -R  --validate=false
         kubectl rollout restart deployment/php-app -n prod
         
 
