@@ -119,16 +119,16 @@ export default function EventSwiper() {
             </AnimatePresence>
 
             {/* Swipe buttons */}
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
+            <div className="absolute bottom-0 left-0 right-0 flex justify-between">
                 <button
                     onClick={() => handleSwipe('left')}
-                    className="bg-red-500 text-white p-4 rounded-full"
+                    className="bg-red-500 text-white p-8 w-1/2 text-2xl hover:bg-red-600 transition-colors"
                 >
                     ✕
                 </button>
                 <button
                     onClick={() => handleSwipe('right')}
-                    className="bg-green-500 text-white p-4 rounded-full"
+                    className="bg-green-500 text-white p-8 w-1/2 text-2xl hover:bg-green-600 transition-colors"
                 >
                     ♥
                 </button>

@@ -15,16 +15,6 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
     const [startDate, setStartDate] = useState<string>('');
     const [endDate, setEndDate] = useState<string>('');
 
-    useEffect(() => {
-        axios.get(route('events.search'), {
-            params: {
-                search: query,
-            }
-        })
-            .then(response => {
-                setEvents(response.data);
-            });
-    }, [query, startDate, endDate]);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
@@ -46,6 +36,11 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                     transition={{ duration: 0.2 }}
                     className="text-center max-w-4xl mx-auto"
                 >
+
+
+                    <div className="mb-8">
+                        <EventSwiper />
+                    </div>
                     {/* Logo/Title */}
                     <motion.div
                         initial={{ scale: 0.9 }}
@@ -100,7 +95,6 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                         </Link>
                     </motion.div>
 
-                    <EventSwiper />
 
                     {/* Events Section */}
                     <motion.div
@@ -111,19 +105,7 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                     >
                         <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Upcoming Events</h2>
                         <h3 className="text-xl font-bold text-gray-900 mb-8 text-center"> There are {events.length} events</h3>
-                        <div className="mb-8">
-                            <input
-                                type="text"
-                                placeholder="Search events..."
-                                className="w-1/2 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent shadow-sm"
-                                onChange={(e) => {
-                                    const query = e.target.value;
-                                    if (query) {
-                                        setQuery(query);
-                                    }
-                                }}
-                            />
-                        </div>
+
 
 
 
