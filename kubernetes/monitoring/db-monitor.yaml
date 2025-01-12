@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: database-monitor
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: mysql  # Match your database service labels
+  endpoints:
+  - port: metrics  # The port your database exporter uses
+  namespaceSelector:
+    matchNames:
+    - prod  # Your database namespace 
