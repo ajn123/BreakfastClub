@@ -46,11 +46,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function questionnaire()
-    {
-        return $this->hasOne(Questionnaire::class);
-    }
-
     public function questionAnswers()
     {
         return $this->hasMany(QuestionAnswer::class);
