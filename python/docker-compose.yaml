@@ -1,0 +1,33 @@
+# Python services
+services:
+  fastapi:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+    depends_on:
+      - mongo
+    networks:
+      - python_net
+      - sail # Connect to Laravel network
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - python_net
+
+networks:
+  python_net:
+    driver: bridge
+  sail:
+    external: true # Use existing Laravel network
+
+volumes:
+  mongo_data:

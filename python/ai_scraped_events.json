@@ -1,0 +1,67 @@
+[
+  {
+    "title": "Smithsonian National Postal Museum",
+    "description": "The Smithsonian National Postal Museum is devoted to the colorful and engaging history of the nation\u2019s mail service and showcases the largest and most comprehensive collection of stamps and philatelic material in the world. The museum is perfect for all types of events, from galas and seated dinners to cocktail receptions, lectures, and business meetings. The spectacular 90-foot high Atrium features three vintage airmail planes suspended high above guests, while the Historic Lobby offers a grand, Beaux-Arts-style space that features a rosette ceiling and elegant marble floors and columns.",
+    "date": "ongoing",
+    "time": "Open daily 10 am - 5:30 pm except Dec. 25",
+    "location": {
+      "name": "Smithsonian National Postal Museum",
+      "address": "2 Massachusetts Ave. NE Washington , DC 20013-7012 United States"
+    },
+    "admission": "Free admission",
+    "contact": {
+      "phone": [
+        "(202) 633-5555",
+        "(202) 633-5507",
+        "(202) 633-7910"
+      ],
+      "website": "VISIT WEBSITE"
+    },
+    "hours": "Open daily 10 am - 5:30 pm except Dec. 25",
+    "additional_details": {
+      "amenities": "Free Admission, Guided tours available, ADA compliant",
+      "additional_information": "Largest Capacities Banquet capacity: 450, Theatre capacity: 75, Reception capacity: 1100",
+      "discounts": "Membership Discounts, Voucher Program",
+      "metro_station": "Union Station",
+      "nearby_favorites": "Downtown Big Bus Tours Washington, DC, Capitol Riverfront Nationals Park, Georgetown The Escape Game DC"
+    },
+    "source_url": "https://washington.org/find-dc-listings/national-postal-museum",
+    "scraped_at": "2025-01-12T20:50:43.700724"
+  },
+  {
+    "title": "Woodrow Wilson House",
+    "description": "Dine intimately in the presidential Dining Room, enjoy cocktails throughout the main museum rooms or relax and unwind in the tranquil period garden. The President Woodrow Wilson House offers an intimate look at one of America's greatest Presidents, statesman and Nobel Prize winner. View authentic objects from the White House and elaborate gifts of state. This Embassy Row house is a living textbook of modern American life in the 1920s from silent films to flapper dresses and zinc sinks.",
+    "date": "ongoing",
+    "time": "Not mentioned",
+    "location": {
+      "venue": "Woodrow Wilson House",
+      "address": "2340 S St. NW Washington , DC 20008 United States"
+    },
+    "admission": "Not mentioned",
+    "contact": {
+      "phone": "(202) 387-4062",
+      "email": "[email protected]",
+      "website": "Not mentioned"
+    },
+    "hours": "Not mentioned",
+    "additional_details": {
+      "amenities": "A/V Equipment, Easels, Flip Chart, Wifi, Guided tours available, Private Tour, Educational Programming, Open to public, Produces public facing events, ADA compliant, Non-Profit Organization, Accessibility Elevator",
+      "capacities": "Banquet capacity: 120, Classroom capacity: 40, Theatre capacity: 60, Reception capacity: 200",
+      "distance_to_metro": "5 Blocks",
+      "distance_to_conv_center": "1.80 Miles",
+      "floorplans": "Not mentioned",
+      "nearby_landmarks": "Embassy Row",
+      "group_maximum": "45",
+      "length_of_tour": "1-2 Hours",
+      "discount": "Membership Discounts, Military Discounts",
+      "metro_station": "Dupont Circle",
+      "parking": "N/A",
+      "valet": "N/A",
+      "metro_line": "Red",
+      "payment_options": "American Express, Cash, Diners Club, Discover, MasterCard, Personal Checks, Travelers Checks, Visa",
+      "directions": "2340 S St. NW Washington , DC 20008 United States"
+    },
+    "source_url": "https://washington.org/find-dc-listings/woodrow-wilson-house",
+    "scraped_at": "2025-01-12T20:50:59.687107"
+  }
+]
