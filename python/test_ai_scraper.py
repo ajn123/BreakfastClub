@@ -23,7 +23,7 @@ async def main():
         
         # Test URLs
         test_urls = [
-            "https://washington.org/find-dc-listings/woodrow-wilson-house"
+            "https://www.lincolncottage.org/the-washington-post-17-things-to-do-in-the-d-c-area-this-week/?gad_source=1&gclid=Cj0KCQiAkJO8BhCGARIsAMkswygC-bl2gpsQ1jcdO9NtbRNdbnnHjWRdalqghQNjyP6qVjlLV826uPMaAt15EALw_wcB"
 
             # Add more URLs to test
         ]
