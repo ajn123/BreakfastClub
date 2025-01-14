@@ -11,7 +11,7 @@ RUN docker-php-ext-install pcntl
 RUN composer install 
 # Build stage for Node dependencies
 
-FROM node:18 as node
+FROM node:18.19-alpine3.18 as node
 WORKDIR /app
 COPY . .
 COPY --from=composer /app/vendor/ ./vendor/
