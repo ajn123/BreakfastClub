@@ -13,7 +13,8 @@ spec:
   tls:
   - hosts:
     - touchgrassdc.com
-    secretName: touchgrassdc-tls
+    - analytics.touchgrassdc.com
+    secretName: touchgrassdc-tls-new
   rules:
   - host: touchgrassdc.com
     http:
@@ -33,6 +34,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: monitoring-grafana
+            name: monitoring-prometheus
             port:
               number: 80

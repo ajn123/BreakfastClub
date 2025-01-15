@@ -21,7 +21,6 @@ spec:
         volumeMounts:
         - name: laravel-storage
           mountPath: /shared
-
       containers:
       - name: nginx
         image:  ghcr.io/ajn123/breakfast-club-nginx:latest
@@ -31,7 +30,6 @@ spec:
         volumeMounts:
         - name: laravel-storage
           mountPath: /var/www/laravel/current
-      
       - name: php-fpm
         image: ghcr.io/ajn123/breakfast-club-php-fpm:latest
         ports:

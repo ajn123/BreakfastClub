@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: prod
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 15s
+    scrape_configs:
+      - job_name: 'mysql'
+        static_configs:
+          - targets: ['mysql-exporter.prod.svc.cluster.local:9104']
+        metrics_path: /metrics 
