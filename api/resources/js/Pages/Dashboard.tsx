@@ -37,10 +37,10 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                     >
                         <div className="p-6 text-center">
                             <h1 className="text-3xl font-bold text-orange-600 mb-4">
-                                Welcome to The Breakfast Club DC
+                                Welcome to Touch Grass DC
                             </h1>
                             <p className="text-gray-600 dark:text-gray-300">
-                                Your next breakfast adventure awaits!
+                                Your next adventure awaits!
                             </p>
                         </div>
                     </motion.div>
@@ -52,7 +52,7 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                         transition={{ delay: 0.2 }}
                         className="grid grid-cols-1 md:grid-cols-3 gap-6"
                     >
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition">
+                        {/* <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition">
                             <div className="p-6">
                                 <div className="flex items-center space-x-4">
                                     <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/50 rounded-lg flex items-center justify-center">
@@ -98,7 +98,7 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
 
 
@@ -155,7 +155,7 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                         transition={{ delay: 0.6 }}
                         className="grid grid-cols-1 md:grid-cols-3 gap-6"
                     >
-                        <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                        {/* <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                             <div className="p-6 text-center">
                                 <div className="text-3xl font-bold text-orange-500 mb-2">12</div>
                                 <div className="text-gray-500 dark:text-gray-400">Events Attended</div>
@@ -172,7 +172,7 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                                 <div className="text-3xl font-bold text-orange-500 mb-2">4.9</div>
                                 <div className="text-gray-500 dark:text-gray-400">Average Rating</div>
                             </div>
-                        </div>
+                        </div> */}
                     </motion.div>
                 </div>
             </div>
