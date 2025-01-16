@@ -37,10 +37,6 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                     className="text-center max-w-4xl mx-auto"
                 >
 
-
-                    <div className="mb-8">
-                        <EventSwiper />
-                    </div>
                     {/* Logo/Title */}
                     <motion.div
                         initial={{ scale: 0.9 }}
@@ -49,7 +45,7 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                         className="mb-8"
                     >
                         <h1 className="text-6xl md:text-7xl font-bold text-orange-600 mb-4">
-                            DC Offline
+                            Touch Grass DC
                         </h1>
                         <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
                     </motion.div>
@@ -61,7 +57,7 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                         transition={{ delay: 0.3 }}
                         className="text-2xl md:text-3xl text-gray-700 mb-8 font-light"
                     >
-                        Find something to do
+                        Welcome to a grass roots social club trying to make DC less lonely, with events and activities to do without the need to doom scroll.
                     </motion.p>
 
                     {/* Description */}
@@ -69,7 +65,7 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5 }}
-                        className="text-lg md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto"
+                        className="text-2xl md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto"
                     >
                         Making friends and finding things to do in DC
                     </motion.p>
@@ -95,6 +91,11 @@ export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
                         </Link>
                     </motion.div>
 
+
+
+                    <div className="mb-8">
+                        <EventSwiper />
+                    </div>
 
                     {/* Events Section */}
                     <motion.div
