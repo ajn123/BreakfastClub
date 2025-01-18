@@ -82,6 +82,7 @@ RUN apt-get update && \
     mariadb-client \
     libonig-dev \
     unzip \
+    php-intl \
     ext-intl \
     && apt-get clean 
 
