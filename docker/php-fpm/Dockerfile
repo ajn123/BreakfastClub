@@ -82,6 +82,7 @@ RUN apt-get update && \
     mariadb-client \
     libonig-dev \
     unzip \
+    ext-intl \
     && apt-get clean 
 
 # Install soap extention
