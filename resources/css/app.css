@@ -7,7 +7,6 @@ body {
     @apply bg-orange-50;
 }
 
-
 .orange-body {
     @apply bg-gradient-to-br from-amber-50 via-orange-50 to-red-50;
 }
