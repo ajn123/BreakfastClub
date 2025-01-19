@@ -1,26 +1,10 @@
 # Build stage for Composer dependencies
-FROM composer:latest as composer
+FROM composer:latest AS composer
 
-WORKDIR /app
 
-COPY . .
-
-# Install the PHP intl extention
-RUN docker-php-ext-install pcntl 
-
-RUN composer install 
 # Build stage for Node dependencies
 
-FROM node:18.19-alpine3.18 as node
-WORKDIR /app
-COPY . .
-COPY --from=composer /app/vendor/ ./vendor/
-RUN npm install
-RUN npm run build
-
-# Copy from build stages to final image
-# Copied from cyberduck/php-fpm-laravel
-#https://github.com/Cyber-Duck/php-fpm-laravel/blob/8.1/Dockerfile
+FROM node:18.19-alpine3.18 AS node
 
 FROM php:8.2-fpm
 
@@ -82,8 +66,6 @@ RUN apt-get update && \
     mariadb-client \
     libonig-dev \
     unzip \
-    php-intl \
-    ext-intl \
     && apt-get clean 
 
 # Install soap extention
@@ -108,9 +90,6 @@ RUN docker-php-ext-install bcmath
 RUN docker-php-ext-install gmp
 
 RUN pecl install redis && docker-php-ext-enable redis
-
-# Install the xdebug extension
-RUN pecl install xdebug
 
 # Install the php memcached extension
 RUN pecl install memcached && docker-php-ext-enable memcached
@@ -159,9 +138,22 @@ WORKDIR /var/www/laravel/current
 
 COPY . .
 
-COPY --from=composer /app/vendor/ ./vendor/
-COPY --from=node /app/public/build/ ./public/build/
-COPY --from=node /app/node_modules/ ./node_modules/
+# Install dependencies
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+RUN composer install 
+# Install Node.js and npm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs
+
+# Install npm dependencies
+RUN npm install
+
+
+
+# Generate autoloader
+RUN composer dump-autoload --optimize
 
 RUN groupadd -g 1000 laravel && \
     usermod -a -G laravel www-data && \
