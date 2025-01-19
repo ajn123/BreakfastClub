@@ -23,7 +23,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        if (config('app.env') === 'development') {
+        if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }
 
