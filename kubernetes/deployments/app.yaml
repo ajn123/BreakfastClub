@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: php-app
   namespace: prod
+  labels:
+    type: laravel
 spec:
   replicas: 1
   selector:

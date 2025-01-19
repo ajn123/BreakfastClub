@@ -4,7 +4,6 @@ metadata:
   name: laravel-migration
   namespace: prod
 spec:
-  ttlSecondsAfterFinished: 100
   backoffLimit: 4
   template:
     metadata:
@@ -26,12 +25,6 @@ spec:
         - configMapRef:
             name: laravel-config
         env:
-          - name: DB_HOST
-            value: "mysql"
-          - name: DB_DATABASE
-            value: "myapp"
-          - name: DB_USERNAME
-            value: "root"
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
