@@ -1,10 +1,7 @@
-# Build stage for Composer dependencies
 FROM composer:latest AS composer
 
-
-# Build stage for Node dependencies
-
-FROM node:18.19-alpine3.18 AS node
+#TODO: remove this
+FROM node:18.19-alpine3.18 AS node 
 
 FROM php:8.2-fpm
 
@@ -150,6 +147,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Install npm dependencies
 RUN npm install
 
+RUN npm run build
 
 
 # Generate autoloader
