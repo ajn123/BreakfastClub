@@ -34,6 +34,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: monitoring-prometheus
+            name: grafana
             port:
-              number: 80
+              number: 3000

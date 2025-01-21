@@ -32,7 +32,7 @@ metadata:
   namespace: prod
 type: Opaque
 stringData:
-  data-source-name: "exporter:password@(mysql.prod.svc.cluster.local:3306)/"
+  data-source-name: "root:your-password@(mysql.prod.svc.cluster.local:3306)/"
 ---
 apiVersion: v1
 kind: Service
@@ -47,7 +47,6 @@ spec:
     name: metrics
   selector:
     app: mysql-exporter 
-
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
