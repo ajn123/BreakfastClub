@@ -133,17 +133,9 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                     >
                         <div className="p-6">
                             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Featured Events</h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">Coffee & Conversation</h3>
-                                    <p className="text-orange-600 dark:text-orange-400">Tomorrow, 8:00 AM</p>
-                                    <p className="text-gray-500 dark:text-gray-400">La Colombe Coffee Roasters</p>
-                                </div>
-                                <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-                                    <h3 className="font-semibold text-gray-900 dark:text-gray-100">Breakfast Networking</h3>
-                                    <p className="text-orange-600 dark:text-orange-400">Saturday, 9:00 AM</p>
-                                    <p className="text-gray-500 dark:text-gray-400">Ted's Bulletin</p>
-                                </div>
+                            <div className="flex flex-col items-center justify-center py-8">
+                                <p className="text-gray-500 dark:text-gray-400 text-center mb-2">No events scheduled yet</p>
+                                <p className="text-sm text-gray-400 dark:text-gray-500 text-center">Check back soon for upcoming events!</p>
                             </div>
                         </div>
                     </motion.div>
