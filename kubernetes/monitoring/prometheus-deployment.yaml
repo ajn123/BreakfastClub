@@ -7,11 +7,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: prometheus
+      app: prometheus
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: prometheus
+        app: prometheus
     spec:
       containers:
       - name: prometheus

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: prod
+data:
+  my.cnf: |
+    [mysqld]
+    # General Query Log to stdout
+    general_log = ON
+    general_log_file = /dev/stdout
+    
+    # Slow Query Log to stdout
+    slow_query_log = ON
+    slow_query_log_file = /dev/stdout
+    long_query_time = 1
+    
+    # Error Log to stderr
+    log_error = /dev/stderr
+    
+    # Detailed logging - changed from TABLE to FILE
+    log_output = FILE
+    
+    # Query logging
+    log_queries_not_using_indexes = ON
+    log_slow_admin_statements = ON
+    log_slow_slave_statements = ON 

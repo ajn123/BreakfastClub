@@ -14,6 +14,19 @@ spec:
       labels:
         app: mysql
     spec:
+      initContainers:
+      - name: init-mysql
+        image: mysql:8.0
+        command:
+        - bash
+        - "-c"
+        - |
+          mkdir -p /var/log/mysql
+          chown -R mysql:mysql /var/log/mysql
+          chmod 755 /var/log/mysql
+        volumeMounts:
+        - name: mysql-logs
+          mountPath: /var/log/mysql
       containers:
       - name: mysql
         image: mysql:8.0
@@ -30,6 +43,16 @@ spec:
         volumeMounts:
         - name: mysql-data
           mountPath: /var/lib/mysql
+        - name: mysql-config
+          mountPath: /etc/mysql/conf.d
+        - name: mysql-logs
+          mountPath: /var/log/mysql
+      volumes:
+      - name: mysql-config
+        configMap:
+          name: mysql-config
+      - name: mysql-logs
+        emptyDir: {}
   volumeClaimTemplates:
   - metadata:
       name: mysql-data
