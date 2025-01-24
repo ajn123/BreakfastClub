@@ -78,24 +78,24 @@ jobs:
           tags: ghcr.io/${{ github.repository_owner }}/breakfast-club-nginx:latest
           file: ./api/docker/nginx/Dockerfile
 
-  deploy:
-    needs: build
-    if: success()
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
+  # deploy:
+  #   needs: build
+  #   if: success()
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
     
-    - name: Install doctl
-      uses: digitalocean/action-doctl@v2
-      with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+  #   - name: Install doctl
+  #     uses: digitalocean/action-doctl@v2
+  #     with:
+  #       token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
         
-    - name: Save DigitalOcean kubeconfig
-      run: doctl kubernetes cluster kubeconfig save my-cluster
+  #   - name: Save DigitalOcean kubeconfig
+  #     run: doctl kubernetes cluster kubeconfig save my-cluster
         
-    - name: Deploy to cluster
-      run: |
-        kubectl rollout restart deployment php-app -n prod
+  #   - name: Deploy to cluster
+  #     run: |
+  #       kubectl rollout restart deployment php-app -n prod
         
 
 
