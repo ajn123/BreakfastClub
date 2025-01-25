@@ -61,6 +61,11 @@ sail artisan queue:work redis --queue=scout
 ```
 
 
+# Terraform
+Terraform is used to automatically create a Kubernetes cluster on Digital Ocean.
+
+
+
 
 # Thanks
 - Use https://github.com/vlaurin/action-ghcr-prune/tree/v0.5.0/ to prune old images from github container registry.
