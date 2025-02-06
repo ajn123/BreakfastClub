@@ -1,0 +1,1 @@
+import{j as t}from"./app-DfunC_VF.js";/* empty css            */function a({question:e}){return t.jsxs("div",{children:[t.jsx("h2",{className:"text-3xl font-bold text-gray-900 mb-2",children:e.title}),t.jsx("p",{className:"text-gray-600",children:e.subtitle})]})}export{a as default};

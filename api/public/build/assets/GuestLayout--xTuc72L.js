@@ -1,0 +1,1 @@
+import{j as e}from"./app-DfunC_VF.js";function m({children:s}){return e.jsx("div",{className:"flex min-h-screen flex-col items-center  pt-6 sm:justify-center sm:pt-0 orange-body",children:e.jsx("div",{className:"mt-6 w-full overflow-hidden px-6 py-4 shadow-xl sm:max-w-md sm:rounded-lg orange-body-dark",children:s})})}export{m as G};
