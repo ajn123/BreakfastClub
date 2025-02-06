@@ -1,5 +1,4 @@
 import EventItem from '@/Components/EventItem';
-import EventSwiper from '@/Components/EventSwiper';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { Event } from '../types';
@@ -7,156 +6,255 @@ import axios from 'axios';
 
 import { useState, useEffect } from 'react';
 
-export default function Welcome({ AllEvents }: { AllEvents: Event[] }) {
+const Panel: React.FC<{
+  bgColor?: string;
+  children: React.ReactNode;
+}> = ({ bgColor = "bg-white", children }) => (
+  <div className={`min-h-screen ${bgColor} flex items-center justify-center p-8`}>
+    <div className="max-w-6xl w-full">
+      {children}
+    </div>
+  </div>
+);
 
+const GrassBackground: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className="grass-container">
+      <div className="grass-background">
+        {/* Create multiple grass blades */}
+        {[...Array(20)].map((_, index) => (
+          <div key={index} className="grass-blade" style={{
+            left: `${index * 5}%`,
+            animationDelay: `${index * 0.1}s`
+          }} />
+        ))}
+      </div>
+      {/* Content overlay */}
+      <div className="content-overlay">
+        {children}
+      </div>
+      <style>{`
+        .grass-container {
+          width: 100%;
+          height: 100vh;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .grass-background {
+          width: 100%;
+          height: 100%;
+          background-color: #4CAF50;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+
+        .content-overlay {
+          position: relative;
+          z-index: 10;
+          height: 100%;
+        }
+
+        .grass-blade {
+          position: absolute;
+          bottom: 0;
+          width: 10px;
+          height: 40px;
+          background: linear-gradient(to top, #2E7D32, #388E3C);
+          border-radius: 10px 10px 0 0;
+          transform-origin: bottom center;
+          animation: sway 4s ease-in-out infinite;
+        }
+
+        @keyframes sway {
+          0%, 100% {
+            transform: rotate(-5deg);
+          }
+          50% {
+            transform: rotate(5deg);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default function Welcome() {
     const [searchQuery, setSearchQuery] = useState('');
-    const [events, setEvents] = useState<Event[]>(AllEvents);
     const [query, setQuery] = useState<string>('');
     const [startDate, setStartDate] = useState<string>('');
     const [endDate, setEndDate] = useState<string>('');
 
-
     return (
-        <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
-            {/* Decorative breakfast icons background */}
-            <div className="absolute inset-0 z-0 opacity-5">
-                <div className="absolute inset-0"
-                    style={{
-                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0C13.4315 0 0 13.4315 0 30C0 46.5685 13.4315 60 30 60C46.5685 60 60 46.5685 60 30C60 13.4315 46.5685 0 30 0ZM30 45C21.7157 45 15 38.2843 15 30C15 21.7157 21.7157 15 30 15C38.2843 15 45 21.7157 45 30C45 38.2843 38.2843 45 30 45Z' fill='%23EA580C' fill-opacity='0.1'/%3E%3C/svg%3E")`,
-                        backgroundSize: '60px 60px'
-                    }}
-                />
+        <div className="snap-y snap-proximity h-screen overflow-y-auto">
+            {/* Hero Panel */}
+            <div className="snap-start h-screen">
+                <GrassBackground>
+                    <div className="relative min-h-screen flex flex-col items-center justify-center px-4 my-16">
+                        {/* Main Content */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="text-center max-w-4xl mx-auto"
+                        >
+                            {/* Logo/Title */}
+                            <motion.div
+                                initial={{ scale: 0.9 }}
+                                animate={{ scale: 1 }}
+                                transition={{ duration: 0.5 }}
+                                className="mb-8"
+                            >
+                                <h1 className="text-6xl md:text-7xl font-bold text-white mb-4">
+                                    Touch Grass DC
+                                </h1>
+                                <div className="h-1 w-24 bg-white mx-auto rounded-full"></div>
+                            </motion.div>
+
+                            {/* Tagline */}
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.3 }}
+                                className="text-2xl md:text-3xl text-white mb-8 font-light"
+                            >
+                                Welcome to a group dedicated to getting off screens and connecting with each other.
+                            </motion.p>
+
+                            {/* CTA Buttons */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.7 }}
+                                className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+                            >
+                                <Link
+                                    href={route('register')}
+                                    className="px-8 py-4 bg-white text-green-600 rounded-lg font-semibold hover:bg-green-50 transform hover:scale-105 transition shadow-lg hover:shadow-xl"
+                                >
+                                    Join the Club
+                                </Link>
+                                <Link
+                                    href={route('login')}
+                                    className="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-green-600 transform hover:scale-105 transition shadow-lg hover:shadow-xl"
+                                >
+                                    Sign In
+                                </Link>
+                            </motion.div>
+                        </motion.div>
+                    </div>
+                </GrassBackground>
             </div>
 
-            <div className="relative min-h-screen flex flex-col items-center justify-center px-4 my-16">
-                {/* Main Content */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-center max-w-4xl mx-auto"
-                >
-
-                    {/* Logo/Title */}
+            {/* Events Panel */}
+            <div className="snap-start h-screen">
+                <Panel bgColor="bg-blue-300">
                     <motion.div
-                        initial={{ scale: 0.9 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="mb-8"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center"
                     >
-                        <h1 className="text-6xl md:text-7xl font-bold text-orange-600 mb-4">
-                            Touch Grass DC
-                        </h1>
-                        <div className="h-1 w-24 bg-orange-500 mx-auto rounded-full"></div>
+                        <h2 className="text-4xl font-bold  mb-8">Regular Events</h2>
+                        <p className="text-xl  mb-12">Join us for weekly activities that bring people together</p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div className="bg-white p-6 rounded-xl shadow-lg">
+                                <div className="text-3xl mb-4">🏃‍♂️</div>
+                                <h3 className="text-xl font-semibold mb-2">Read and Chat</h3>
+                                <p className="text-gray-600">Join us to read, draw, and chat</p>
+                            </div>
+                            <div className="bg-white p-6 rounded-xl shadow-lg">
+                                <div className="text-3xl mb-4">🎲</div>
+                                <h3 className="text-xl font-semibold mb-2">Game Nights</h3>
+                                <p className="text-gray-600">Board games, card games, and more</p>
+                            </div>
+                            <div className="bg-white p-6 rounded-xl shadow-lg">
+                                <div className="text-3xl mb-4">🍜</div>
+                                <h3 className="text-xl font-semibold mb-2">Food Adventures</h3>
+                                <p className="text-gray-600">Explore DC's diverse food scene together</p>
+                            </div>
+                        </div>
                     </motion.div>
+                </Panel>
+            </div>
 
-                    {/* Tagline */}
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="text-2xl md:text-3xl text-gray-700 mb-8 font-light"
-                    >
-                        Welcome to a grass roots social club trying to make DC less lonely, with events and activities to do without the need to doom scroll.
-                    </motion.p>
-
-                    {/* Description */}
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.5 }}
-                        className="text-2xl md:text-xl text-gray-600 mb-12 max-w-2xl mx-auto"
-                    >
-                        Making friends and finding things to do in DC
-                    </motion.p>
-
-                    {/* CTA Buttons */}
+            {/* Community Panel */}
+            <div className="snap-start h-screen">
+                <Panel bgColor="bg-white">
                     <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="flex flex-col md:flex-row items-center gap-12"
                     >
+                        <div className="md:w-1/2">
+                            <h2 className="text-4xl font-bold text-gray-800 mb-6">Join Our Community</h2>
+                            <p className="text-xl text-gray-600 mb-8">
+Studies show that devices are stealing our attention, let's reconnect to the world and each other with time off screens.
+                            </p>
+                            <div className="flex gap-4">
+                                {/* <div className="text-center">
+                                    <div className="text-3xl font-bold text-green-600">500+</div>
+                                    <div className="text-gray-600">Members</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-3xl font-bold text-green-600">50+</div>
+                                    <div className="text-gray-600">Events</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-3xl font-bold text-green-600">4.9★</div>
+                                    <div className="text-gray-600">Rating</div>
+                                </div> */}
+                            </div>
+                        </div>
+                        <div className="md:w-1/2">
+                            {/* <img 
+                                src="/images/community.jpg" 
+                                alt="Community" 
+                                className="rounded-xl shadow-2xl"
+                            /> */}
+                        </div>
+                    </motion.div>
+                </Panel>
+            </div>
+
+            {/* Upcoming Events Preview */}
+            <div className="snap-start h-screen">
+                <Panel bgColor="bg-green-900">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center text-white"
+                    >
+                        <h2 className="text-4xl font-bold mb-8">Upcoming Events</h2>
+                        <h3 className="text-xl mb-8"> Sign up for our newsletter to stay up to date on our events</h3>
+
+
+                    </motion.div>
+                </Panel>
+            </div>
+
+            {/* Call to Action Panel */}
+            <div className="snap-start h-screen">
+                <Panel bgColor="bg-gradient-to-br from-green-500 to-green-800">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="text-center text-white"
+                    >
+                        <h2 className="text-4xl font-bold mb-6">Ready to Touch Grass?</h2>
+                        <p className="text-xl mb-8">Join us and start making real connections in DC</p>
                         <Link
                             href={route('register')}
-                            className="px-8 py-4 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transform hover:scale-105 transition shadow-lg hover:shadow-xl"
+                            className="px-8 py-4 bg-white text-green-600 rounded-lg font-semibold hover:bg-green-50 transform hover:scale-105 transition shadow-lg hover:shadow-xl"
                         >
-                            Join the Club
-                        </Link>
-                        <Link
-                            href={route('login')}
-                            className="px-8 py-4 bg-white text-orange-500 rounded-lg font-semibold hover:bg-orange-50 transform hover:scale-105 transition shadow-lg hover:shadow-xl"
-                        >
-                            Sign In
+                            Get Started Today
                         </Link>
                     </motion.div>
-
-
-
-                    <div className="mb-8">
-                        <EventSwiper />
-                    </div>
-
-                    {/* Events Section */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.8 }}
-                        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16"
-                    >
-                        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Upcoming Events</h2>
-                        <h3 className="text-xl font-bold text-gray-900 mb-8 text-center"> There are {events.length} events</h3>
-
-
-
-
-                        {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {events && events.map((event: Event, index: number) => (
-                                <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.8 + (index * 0.1) }}
-                                >
-                                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-                                        <EventItem event={event} />
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </div> */}
-                    </motion.div>
-
-                    {/* Quick Stats */}
-                    {/* <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.9 }}
-                        className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-3xl mx-auto"
-                    >
-                        <div className="text-center">
-                            <div className="text-3xl font-bold text-orange-500 mb-2">500+</div>
-                            <div className="text-gray-600">Members</div>
-                        </div>
-                        <div className="text-center">
-                            <div className="text-3xl font-bold text-orange-500 mb-2">50+</div>
-                            <div className="text-gray-600">Venues</div>
-                        </div>
-                        <div className="text-center">
-                            <div className="text-3xl font-bold text-orange-500 mb-2">1000+</div>
-                            <div className="text-gray-600">Connections Made</div>
-                        </div>
-                    </motion.div> */}
-                </motion.div>
-
-                {/* Footer */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.1 }}
-                    className="absolute bottom-8 text-center text-gray-500"
-                >
-                    <p>Available in Washington, DC and surrounding areas</p>
-                </motion.div>
+                </Panel>
             </div>
         </div>
     );
