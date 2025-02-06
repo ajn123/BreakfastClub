@@ -15,7 +15,6 @@ Route::middleware(RedirectIfAuthenticated::class)->group(function () {
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
             'canRegister' => Route::has('register'),
-            'AllEvents' => Event::all(),
         ]);
     });
 });
