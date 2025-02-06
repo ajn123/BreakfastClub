@@ -46,10 +46,13 @@ class RegisteredUserController extends Controller
         event(new UserRegistered($user));
 
         // Send welcome email
-        Mail::to($user->email)->send(new WelcomeMail($user));
+        if (env('APP_ENV') == 'local') {
+            Mail::to($user->email)->send(new WelcomeMail($user));
 
-        Mail::to($user->email)
+            Mail::to($user->email)
             ->queue(new WelcomeMail($user));
+        }
+
 
         Log::info('User registered: '.$user->email);
 
