@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Mail\WelcomeMail;
+use App\Mail\WelcomeEmail;
 use Illuminate\Http\Request;
 use App\Events\UserRegistered;
 use Illuminate\Validation\Rules;
@@ -43,16 +43,10 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new UserRegistered($user));
+        //event(new UserRegistered($user));
 
         // Send welcome email
-        if (env('APP_ENV') == 'local') {
-            Mail::to($user->email)->send(new WelcomeMail($user));
-
-            Mail::to($user->email)
-            ->queue(new WelcomeMail($user));
-        }
-
+        Mail::to($user->email)->queue(new WelcomeEmail($user->name));
 
         Log::info('User registered: '.$user->email);
 

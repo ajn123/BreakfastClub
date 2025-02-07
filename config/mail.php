@@ -39,16 +39,13 @@ return [
 
         'smtp' => [
             'transport' => 'smtp',
-            'scheme' => 'smtp',
-            'host' => env('MAIL_HOST', 'mailhog'),
-            'port' => env('MAIL_PORT', 1025),
+            'host' => env('MAIL_HOST', 'smtp.sendgrid.net'),
+            'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'username' => env('MAIL_USERNAME', 'apikey'),
+            'password' => env('SENDGRID_API_KEY'),
             'timeout' => null,
-            'verify_peer' => env('MAIL_VERIFY_PEER', false),
-            'verify_peer_name' => env('MAIL_VERIFY_PEER_NAME', false),
-            'allow_self_signed' => env('MAIL_ALLOW_SELF_SIGNED', true),
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
 
         'ses' => [

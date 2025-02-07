@@ -8,6 +8,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Controllers\QuestionAnswersController;
+use App\Mail\WelcomeEmail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
@@ -46,5 +49,10 @@ Route::prefix('api')->group(function () {
     Route::post('/liked-events', [EventsController::class, 'likedEvents'])->name('liked-events.store');
     Route::get('/liked-events', [EventsController::class, 'likedEvents'])->name('liked-events.index');
 });
+
+// Route::get('/test-email', function () {
+//     Mail::to('ajn123@vt.edu')->send(new WelcomeEmail('Hello User'));
+//     return 'Test email sent!';
+// });
 
 require __DIR__.'/auth.php';

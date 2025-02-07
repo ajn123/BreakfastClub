@@ -16,6 +16,7 @@
         "laravel/scout": "^10.11",
         "laravel/tinker": "^2.9",
         "meilisearch/meilisearch-php": "^1.12",
+        "sendgrid/sendgrid": "^8.1",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
