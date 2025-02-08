@@ -46,7 +46,7 @@ class RegisteredUserController extends Controller
         //event(new UserRegistered($user));
 
         // Send welcome email
-        Mail::to($user->email)->queue(new WelcomeEmail($user->name));
+        Mail::to($user->email)->send(new WelcomeEmail($user->name));
 
         Log::info('User registered: '.$user->email);
 
