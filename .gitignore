@@ -23,3 +23,5 @@ yarn-error.log
 /.vscode
 /.zed
 /docker/logs
+
+package-lock.json
