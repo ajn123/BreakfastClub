@@ -33,10 +33,10 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg"
+                        className="bg-black dark:bg-black overflow-hidden shadow-sm sm:rounded-lg"
                     >
                         <div className="p-6 text-center">
-                            <h1 className="text-3xl font-bold text-orange-600 mb-4">
+                            <h1 className="text-3xl font-bold text-white mb-4">
                                 Welcome to Touch Grass DC
                             </h1>
                             <p className="text-gray-600 dark:text-gray-300">
@@ -100,12 +100,10 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                             </div>
                         </div> */}
 
-
-
                         {!hasCompletedQuestions && (
                             <Link
                                 href={route('question-answers.index')}
-                                className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition"
+                                className="black-background overflow-hidden shadow-sm sm:rounded-lg hover:shadow-lg transition"
                             >
                                 <div className="p-6">
                                     <div className="flex items-center space-x-4">
@@ -129,7 +127,7 @@ export default function Dashboard({ auth, hasCompletedQuestions, toast }: PagePr
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.4 }}
-                        className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg"
+                        className="black-background overflow-hidden shadow-sm sm:rounded-lg"
                     >
                         <div className="p-6">
                             <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Featured Events</h2>

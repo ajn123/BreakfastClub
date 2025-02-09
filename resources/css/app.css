@@ -14,3 +14,7 @@ body {
 .orange-body-dark {
     @apply bg-gradient-to-br from-amber-900 via-black to-red-400;
 }
+
+.black-background {
+    @apply bg-black dark:bg-black;
+}

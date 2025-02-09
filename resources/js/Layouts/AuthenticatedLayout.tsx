@@ -15,8 +15,8 @@ export default function Authenticated({
         useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+        <div className="min-h-screen bg-green-400">
+            <nav className="border-b border-gray-100 dark:border-gray-700 black-background">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
@@ -25,7 +25,7 @@ export default function Authenticated({
                                 <NavLink
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
-                                    className="text-xl font-bold font-semibold text-orange-500"
+                                    className="text-xl font-bold font-semibold text-white"
                                 >
                                     Dashboard
                                 </NavLink>

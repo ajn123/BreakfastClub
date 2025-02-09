@@ -117,7 +117,7 @@ export default function Login({
                     href={route('register')}
                     className="inline-block px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transform hover:scale-105 transition duration-200 shadow-lg hover:shadow-xl"
                 >
-                    Sign up for The Breakfast Club
+                    Sign up!
                 </Link>
             </div>
         </GuestLayout>
