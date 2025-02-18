@@ -5,6 +5,7 @@ import { Event } from '../types';
 import axios from 'axios';
 
 import { useState, useEffect } from 'react';
+import EventSwiper from '@/Components/EventSwiper';
 
 const Panel: React.FC<{
   bgColor?: string;
@@ -130,16 +131,17 @@ export default function Welcome() {
                                 className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
                             >
                                 <Link
-                                    href={route('register')}
+                                    href={"#regular-events"}
                                     className="px-8 py-4 bg-white text-green-600 rounded-lg font-semibold hover:bg-green-50 transform hover:scale-105 transition shadow-lg hover:shadow-xl"
                                 >
-                                    Join the Club
+                                    Find Events
                                 </Link>
                                 <Link
-                                    href={route('login')}
-                                    className="px-8 py-4 border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-green-600 transform hover:scale-105 transition shadow-lg hover:shadow-xl"
+                                    href={route('register')}
+                                    className="px-8 py-4 bg-blue-500 text-white rounded-lg font-semibold hover:bg-orange-500 transform hover:scale-105 transition shadow-lg hover:shadow-xl"
+                            
                                 >
-                                    Sign In
+                                    Sign Up 
                                 </Link>
                             </motion.div>
                         </motion.div>
@@ -148,7 +150,7 @@ export default function Welcome() {
             </div>
 
             {/* Events Panel */}
-            <div className="snap-start h-screen">
+            <div className="snap-start h-screen" id="regular-events">
                 <Panel bgColor="bg-blue-300">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -156,25 +158,9 @@ export default function Welcome() {
                         transition={{ duration: 0.6 }}
                         className="text-center"
                     >
-                        <h2 className="text-4xl font-bold  mb-8">Regular Events</h2>
-                        <p className="text-xl  mb-12">Join us for weekly activities that bring people together</p>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="bg-white p-6 rounded-xl shadow-lg">
-                                <div className="text-3xl mb-4">🏃‍♂️</div>
-                                <h3 className="text-xl font-semibold mb-2">Read and Chat</h3>
-                                <p className="text-gray-600">Join us to read, draw, and chat</p>
-                            </div>
-                            <div className="bg-white p-6 rounded-xl shadow-lg">
-                                <div className="text-3xl mb-4">🎲</div>
-                                <h3 className="text-xl font-semibold mb-2">Game Nights</h3>
-                                <p className="text-gray-600">Board games, card games, and more</p>
-                            </div>
-                            <div className="bg-white p-6 rounded-xl shadow-lg">
-                                <div className="text-3xl mb-4">🍜</div>
-                                <h3 className="text-xl font-semibold mb-2">Food Adventures</h3>
-                                <p className="text-gray-600">Explore DC's diverse food scene together</p>
-                            </div>
-                        </div>
+                        <h2 className="text-4xl font-bold  mb-8" >Regular Events</h2>
+                        
+                        <EventSwiper />
                     </motion.div>
                 </Panel>
             </div>
